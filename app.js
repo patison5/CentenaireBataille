@@ -19,11 +19,11 @@ var server = app.listen(3000, () => {
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
-    setTimeout(() => socket.disconnect(true), 5000);
 
 
     console.log(' %s sockets connected', io.engine.clientsCount);
     console.log('socket id: ', socket.id);
+    
     socket.username = "Anonymous"
 
     socket.on('change_username', (data) => {
@@ -42,5 +42,6 @@ io.on('connection', (socket) => {
     });
     socket.on('disconnect', function() {
         console.log("disconnect: ", socket.id);
+        setTimeout(() => socket.disconnect(true), 5000);
     });
 })
