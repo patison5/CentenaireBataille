@@ -19,8 +19,11 @@ var server = app.listen(3000, () => {
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
-    console.log('New User connected!')
+    setTimeout(() => socket.disconnect(true), 5000);
 
+
+    console.log(' %s sockets connected', io.engine.clientsCount);
+    console.log('socket id: ', socket.id);
     socket.username = "Anonymous"
 
     socket.on('change_username', (data) => {
@@ -29,12 +32,15 @@ io.on('connection', (socket) => {
         socket.username = data.usernam;
     })
 
-    //io.sockets.emit('test', {message: 'hello'});
-
-
-
     socket.on('new_message', (data) => {
         console.log('that is fucking data: ', data.message)
         io.sockets.emit('new_message', {message: data.message})
     })
+
+    socket.on('connection', function() {
+        console.log("connection: ", socket.id);
+    });
+    socket.on('disconnect', function() {
+        console.log("disconnect: ", socket.id);
+    });
 })

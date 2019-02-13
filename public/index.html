@@ -5,7 +5,6 @@
 	<title>Centenaire bataillie</title>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src=”http://code.jquery.com/jquery-latest.min.js"></script>"
 </head>
 <body>
 	<canvas id="myGame"></canvas>	
@@ -13,36 +12,7 @@
     <span id="btn"> click </span>
     <p id="result"> </p>
 
-    <script charset="utf-8">
-        //client.js
-
-        var socket =  io.connect('http://localhost:3000');
-
-        function test () {
-            socket.emit('change_username', {username: 'patison5'})
-
-            socket.on("test", (data) =>{
-               console.log(data)
-            })
-        }
-
-        test()
-
-       socket.on("new_message", (data) => {
-        console.log(data)
-        var result = document.getElementById('result');
-        result.append(data.message)
-        }) 
-
-
-        var btn = document.getElementById('btn');
-        var el = 0;
-
-        btn.addEventListener('click', function() {
-            var socket =  io.connect('http://localhost:3000');
-            
-            socket.emit('new_message', {message: el++})
-        })
+    <script src="js/game.js">
     </script>
 
 
