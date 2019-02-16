@@ -1,6 +1,11 @@
 
 window.onload = function () {
-	var socket;
+    (function() {
+      console.log('Initialization started!');
+    })();
 
-	socket.io.connect('http://localhost:3000')
+
+
+
+
 }
