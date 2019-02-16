@@ -2,18 +2,16 @@
 
 Шел третий семестр шараги...
 
-// клон проекта
-
+// clone project
 git clone https://github.com/patison5/CentenaireBataille.git
 
+// go to the folder
 cd CentenaireBataille
 
 
-// установка необходимых пакетов
-
+// install dependencies
 npm install
 
 
-// запуск проекта
-
+// start the server
 node server.js
