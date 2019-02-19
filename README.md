@@ -5,17 +5,9 @@
 
 
 
-
-
-
-
 # clone project:
 
 git clone https://github.com/patison5/CentenaireBataille.git
-
-
-
-
 
 
 
@@ -26,20 +18,9 @@ cd CentenaireBataille
 
 
 
-
-
-
-
-
 # install dependencies:
 
 npm install
-
-
-
-
-
-
 
 
 # start the server:

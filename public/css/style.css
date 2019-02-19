@@ -28,6 +28,9 @@ body {
 	font: 13px/16px 'Montserrat regular', sans-serif, Arial, Tahoma;
 	background: #fff;
 	/*overflow: hidden;*/
+	background: url('../images/bg2.jpg');
+	-webkit-background-size: cover;
+	background-size: cover;
 }
 ol, ul, li { list-style: none; }
 * {
@@ -75,6 +78,7 @@ input { -webkit-appearance: none; }
 	position: relative;
 	margin-top: -300px;
 	display: block;
+	background: #fff;
 }
 
 
@@ -158,6 +162,11 @@ input { -webkit-appearance: none; }
 	cursor: pointer;
 }
 
+.changer-btn-left:hover,
+.changer-btn-right:hover{
+	background: #32800af7;
+}
+
 .changer-btn-left {
 	float: left;
 }
@@ -226,4 +235,9 @@ input { -webkit-appearance: none; }
 	color: #fff;
 	display: block;
 	cursor: pointer;
+}
+
+
+.btn:hover {
+	background: #32800af7;
 }
