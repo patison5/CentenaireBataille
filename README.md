@@ -36,7 +36,7 @@ cd CentenaireBataille
 npm install
 
 
-
+pidor
 
 
 
