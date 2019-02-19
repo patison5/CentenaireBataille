@@ -42,33 +42,36 @@
 
 						<div class="nickname__wrap">
 							<form action="" class="nickname-form" id="js-change__nickname">
-								<input type="text" placeholder="Ebanashka">
+								<input type="text" placeholder="Ebanashka" name="nickname">
 							</form>
 						</div>
 
 					</div>
 					<div class="menu__block menu__right-top">
-						<!-- <form action="" class="login__form log-reg__form" id="js-login__form">
+						<form action="" class="login__form log-reg__form" id="js-login__form">
 							<h2 class="login-form__title">Вход</h2>
-							<input type="text" class="login__input" placeholder="login">
-							<input type="text" class="login__input" placeholder="password">
-							<input type="submit" value="вход" class="btn">
-							<input type="submit" value="Регистрация" class="btn">
-						</form> -->
+
+							<input type="text" class="login__input" name="login" placeholder="login">
+							<input type="text" class="login__input" name="password" placeholder="password">
+							<input type="submit" value="вход" class="btn" id="js-login__submit">
+							<input type="submit" value="Регистрация" class="btn" id="js-swap_form">
+						</form>
 
 						<form action="" class="log-reg__form" id="js-registration__form">
 							<h2 class="login-form__title">Регистрация</h2>
-							<input type="text" class="login__input" placeholder="login">
-							<input type="text" class="login__input" placeholder="password">
-							<input type="submit" value="Зарегистрироваться" class="btn">
-							<input type="submit" value="Уже есть аккаунт" class="btn">
+
+							<input type="text" class="login__input" name="login" placeholder="login">
+							<input type="text" class="login__input" name="password" placeholder="password">
+							<input type="submit" value="Зарегистрироваться" class="btn" id="js-registration__submit">
+							<input type="submit" value="Уже есть аккаунт" class="btn" id="js-swap_form">
 						</form>
 					</div>
 					<div class="menu__block menu__right-bottom">
 						<form action="" class="login__form">
 							<h2 class="login-form__title">Подключиться к серверу</h2>
-							<input type="text" class="login__input" placeholder="id#4839">
-							<input type="submit" value="вход" class="btn">
+
+							<input type="text" class="login__input" name="server_id" placeholder="id#4839">
+							<input type="submit" value="вход" class="btn" id="js-connect_server__submit">
 						</form>
 					</div>
 				</div>
@@ -84,7 +87,8 @@
     <span id="btn"> click </span>
     <p id="result"> </p>
  -->
-    <script src="js/game.js"></script>
+	<script src="js/app.js"></script>
+    <!-- <script src="js/game.js"></script> -->
     <script src="js/cliend.js"></script>
 
 </body>

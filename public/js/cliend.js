@@ -7,9 +7,9 @@ socket.on("new_message", (data) => {
 }) 
 
 
-var btn = document.getElementById('btn');
-var el = 0;
+// var btn = document.getElementById('btn');
+// var el = 0;
 
-btn.addEventListener('click', function() {
-    socket.emit('new_message', {message: el++})
-})
+// btn.addEventListener('click', function() {
+//     socket.emit('new_message', {message: el++})
+// })
