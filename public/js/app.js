@@ -11,8 +11,8 @@ window.onload = function () {
 		connectServerSubmit  = document.getElementById('js-connect_server__submit'),
 		changeNicknameInput	= document.getElementById('js-change_nickname-input');
 
-	var data = {
-		nickname: "defUser",
+	var userData = {
+		nickname: "Ebanashka",
 		id: "#1234"
 	};
 
@@ -41,9 +41,12 @@ window.onload = function () {
 	loginSubmit.addEventListener('click', function (e) {
 		e.preventDefault();
 
-		console.log(this)
+		let data = {
+			userName: document.getElementById('js-login_login').value,
+			userPassword: document.getElementById('js-login_password').value
+		}
 
-		console.log('clicked loginSubmit')		
+		console.log(data)
 	})
 
 
@@ -51,9 +54,12 @@ window.onload = function () {
 	registrationSubmit.addEventListener('click', function (e) {
 		e.preventDefault();
 
-		console.log(this)
+		let data = {
+			userName: document.getElementById('js-registration_login').value,
+			userPassword: document.getElementById('js-registration_password').value
+		}
 
-		console.log('clicked registrationSubmit')		
+		console.log(data)
 	})
 
 
@@ -61,16 +67,19 @@ window.onload = function () {
 	connectServerSubmit.addEventListener('click', function (e) {
 		e.preventDefault();
 
-		console.log(this)
+		let data = {
+			userNickname: userData.nickname,
+			serverId: document.getElementById('js-server_id').value
+		}
 
-		console.log('clicked connect_server__submit')		
+		console.log(data)
 	})
 
 
 	changeNicknameInput.addEventListener('keyup', function (e) {
 		e.preventDefault();
 
-		data.nickname = this.value
+		userData.nickname = this.value
 	})
 
 }

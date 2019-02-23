@@ -19,24 +19,6 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.get("/test", (req, res) => {
-    res.send({
-        user: {
-            id:    1,
-            login: 2
-        }
-    });
-});
-
-app.post("/test", (req, res) => {
-    res.send({
-        user: {
-            id:    3,
-            login: 4
-        }
-    });
-});
-
 
 app.use('/api',  routes.auth)
 
