@@ -1,9 +1,7 @@
 const express = require('express');
 const userController  = require('../controllers/users')
 
-
 const router = express.Router();
-
 
 // тестовый контроллер для регистрации пользователя
 // доступ через http://localhost:3306/api/test2

@@ -12,7 +12,6 @@ const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
 
-
     console.log(' %s sockets connected', io.engine.clientsCount);
     console.log('socket id: ', socket.id);
     
