@@ -17,7 +17,12 @@
   },
   "homepage": "https://github.com/patison5/CentenaireBataille#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "html": "^1.0.0",
+    "nodemon": "^1.18.10",
     "npm": "^6.7.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"

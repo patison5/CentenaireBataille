@@ -1,20 +1,56 @@
+// Создаем приложение с помощью Express
+const routes  = require('./routes')
+const express = require('express');
+
+const app = express();
+
+
 const hostname = 'localhost';
 const port = 3306;
 
-// Создаем приложение с помощью Express
-var express = require('express');
-var app = express();
-
-
 app.use(express.static('public'));
+app.set("view engine", "ejs");
+
+
+
+
 
 app.get('/', (req, res) => {
     res.render('index')
 })
 
+app.get("/test", (req, res) => {
+    res.send({
+        user: {
+            id:    1,
+            login: 2
+        }
+    });
+});
+
+app.post("/test", (req, res) => {
+    res.send({
+        user: {
+            id:    3,
+            login: 4
+        }
+    });
+});
+
+
+app.use('/api',  routes.auth)
+
+
+
+
+
 var server = app.listen(3306, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+
+
+
 
 const io = require('socket.io')(server);
 
