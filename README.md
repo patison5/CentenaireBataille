@@ -10,7 +10,7 @@
 
 
 
-<hr />
+#
 
 [![NPM version](https://badge.fury.io/js/nodemon.svg)](https://github.com/patison5/CentenaireBataille)
 [![Travis Status](https://travis-ci.org/remy/nodemon.svg?branch=master)](https://github.com/patison5/CentenaireBataille) 
