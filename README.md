@@ -43,3 +43,9 @@ npm install
 ```
 node server.js
 ```
+
+### start the server in development mode:
+
+```
+npm run dev
+```
