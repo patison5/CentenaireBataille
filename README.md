@@ -14,7 +14,7 @@
 
 
 ## Trello source:
-(https://trello.com/b/P5wRF83k/centenairebataille)(#Trello)
+https://trello.com/b/P5wRF83k/centenairebataille
 
 
 [![NPM version](https://badge.fury.io/js/nodemon.svg)](https://github.com/patison5/CentenaireBataille)
