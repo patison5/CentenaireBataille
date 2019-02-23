@@ -3,8 +3,13 @@
 Шел третий семестр шараги...
 
 
-[![NPM version](https://badge.fury.io/js/nodemon.svg)](https://npmjs.org/package/nodemon)
-[![Travis Status](https://travis-ci.org/remy/nodemon.svg?branch=master)](https://travis-ci.org/remy/nodemon) 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/patison5/CentenaireBataille/master/public/images/pers.jpg" alt="Nodemon Logo">
+</p>
+
+[![NPM version](https://badge.fury.io/js/nodemon.svg)](https://github.com/patison5/CentenaireBataille)
+[![Travis Status](https://travis-ci.org/remy/nodemon.svg?branch=master)](https://github.com/patison5/CentenaireBataille) 
 [![Backers on Open Collective](https://opencollective.com/nodemon/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/nodemon/sponsors/badge.svg)](#sponsors)
 
