@@ -1,12 +1,14 @@
 # CentenaireBataille
 
-Шел третий семестр шараги...
-
-
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/patison5/CentenaireBataille/master/public/images/pers.jpg" alt="Nodemon Logo">
 </p>
+
+Шел третий семестр шараги...
+
+
+<hr />
 
 [![NPM version](https://badge.fury.io/js/nodemon.svg)](https://github.com/patison5/CentenaireBataille)
 [![Travis Status](https://travis-ci.org/remy/nodemon.svg?branch=master)](https://github.com/patison5/CentenaireBataille) 
