@@ -3,9 +3,10 @@
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/patison5/CentenaireBataille/master/public/images/pers.jpg" alt="Nodemon Logo">
+  <span>Шел третий семестр шараги...</span>
 </p>
 
-Шел третий семестр шараги...
+
 
 
 <hr />
