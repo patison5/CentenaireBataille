@@ -13,6 +13,14 @@ exports.test = (req, res) => {
 }
 
 exports.register = (req, res) => {
+	const login = req.body.userName;
+	const password = req.body.userPassword;
+
+	console.log({
+		login: login,
+		password: password
+	})
+
 	User.testModel("login", (err, docs) => {
 		res.json({
 			ok: false, 
@@ -23,6 +31,16 @@ exports.register = (req, res) => {
 }
 
 exports.login = (req, res) => {
+	const login = req.body.userName;
+	const password = req.body.userPassword;
+
+	console.log({
+		login: login,
+		password: password
+	})
+
+
+
 	User.testModel("login", (err, docs) => {
 		res.json({
 			ok: false, 

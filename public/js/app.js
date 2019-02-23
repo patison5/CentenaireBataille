@@ -6,10 +6,10 @@ window.onload = function () {
 
 	var _isLoginForm = true;
 
-	var loginSubmit 			= document.getElementById('js-login__submit'),
-		registrationSubmit 	= document.getElementById('js-registration__submit'),
+	var loginSubmit 		 = document.getElementById('js-login__submit'),
+		registrationSubmit 	 = document.getElementById('js-registration__submit'),
 		connectServerSubmit  = document.getElementById('js-connect_server__submit'),
-		changeNicknameInput	= document.getElementById('js-change_nickname-input');
+		changeNicknameInput	 = document.getElementById('js-change_nickname-input');
 
 	var userData = {
 		nickname: "Ebanashka",
@@ -19,7 +19,6 @@ window.onload = function () {
 
 
 	for (let i = 0; i < swapFormBtn.length; i++) {
-
 		swapFormBtn[i].addEventListener('click', function (e) {
 			e.preventDefault();
 
@@ -46,7 +45,15 @@ window.onload = function () {
 			userPassword: document.getElementById('js-login_password').value
 		}
 
-		console.log(data)
+		$.ajax({
+			type: "post",
+			url: "/api/auth/login", 
+			dataType: "json",
+			contentType: "application/json; charset=UTF-8",
+			data:  JSON.stringify(data,null, 2)
+		}).done(function ( data ) { 
+			console.log(data); 
+		});
 	})
 
 
@@ -59,7 +66,15 @@ window.onload = function () {
 			userPassword: document.getElementById('js-registration_password').value
 		}
 
-		console.log(data)
+		$.ajax({
+			type: "post",
+			url: "/api/auth/register", 
+			dataType: "json",
+			contentType: "application/json; charset=UTF-8",
+			data:  JSON.stringify(data,null, 2)
+		}).done(function ( data ) { 
+			console.log(data); 
+		});
 	})
 
 
@@ -71,6 +86,17 @@ window.onload = function () {
 			userNickname: userData.nickname,
 			serverId: document.getElementById('js-server_id').value
 		}
+
+
+		$.ajax({
+			type: "post",
+			url: "/api/connect/", 
+			dataType: "json",
+			contentType: "application/json; charset=UTF-8",
+			data:  JSON.stringify(data,null, 2)
+		}).done(function ( data ) { 
+			console.log(data); 
+		});
 
 		console.log(data)
 	})
