@@ -1,5 +1,5 @@
 const hostname = 'localhost';
-const port = 3000;
+const port = 3306;
 
 // Создаем приложение с помощью Express
 var express = require('express');
@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-var server = app.listen(3000, () => {
+var server = app.listen(3306, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
 });
 

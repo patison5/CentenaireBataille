@@ -4,23 +4,37 @@ window.onload = function () {
 
 	var registrationFrom = document.getElementById("js-registration__form"),
 		loginForm = document.getElementById("js-login__form"),
-		swapFormBtn = document.getElementById('js-swap_form');
+		swapFormBtn = document.getElementsByClassName('js-swap_form-btn');
+
+
+		swapFormBtn[0].addeventlistener('click', function () {
+			console.log('e')
+		})
+
+
+	for (let i = 0; i < swapFormBtn.length; i++) {
+
+		console.log(swapFormBtn[i])
 
 
 
-	swapFormBtn.addEventListener('click', function (e) {
-		e.preventDefault();
+		
+		// swapFormBtn[i].addeventlistener('click', function (e) {
+		// 	e.preventdefault();
+		// 	console.log(e)
 
-		_isLoginForm = !_isLoginForm;
+		// 	_isloginform = !_isloginform;
 
-		if (!_isLoginForm) {
-			loginForm.style.display = 'none';
-			registrationFrom.style.display = 'block';
-		} else {
-			loginForm.style.display = 'block';
-			registrationFrom.style.display = 'none';
-		}
-	})
+		// 	if (!_isloginform) {
+		// 		loginform.style.display = 'none';
+		// 		registrationfrom.style.display = 'block';
+		// 	} else {
+		// 		loginform.style.display = 'block';
+		// 		registrationfrom.style.display = 'none';
+		// 	}
+		// })
+	}
+
 }
 
 
