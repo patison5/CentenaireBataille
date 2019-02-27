@@ -1,9 +1,7 @@
-var socket =  io.connect('http://localhost:3000');
+var socket =  io.connect('http://localhost:3306');
 
 socket.on("new_message", (data) => {
     console.log(data)
-    var result = document.getElementById('result');
-    result.innerHTML = data.message;
 }) 
 
 

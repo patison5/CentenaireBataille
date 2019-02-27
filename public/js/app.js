@@ -17,7 +17,6 @@ window.onload = function () {
 	};
 
 
-
 	for (let i = 0; i < swapFormBtn.length; i++) {
 		swapFormBtn[i].addEventListener('click', function (e) {
 			e.preventDefault();
@@ -68,7 +67,7 @@ window.onload = function () {
 
 		$.ajax({
 			type: "post",
-			url: "/api/auth/register", 
+			url: "/api/auth/registration", 
 			dataType: "json",
 			contentType: "application/json; charset=UTF-8",
 			data:  JSON.stringify(data,null, 2)
