@@ -1,7 +1,7 @@
 // GAME APPLICATION CLASS
 function Game () {
 
-	//KEYS BINIDINGS
+	//KEYS BINDING CODES
 	const KEYCODE_ENTER = 13;		
 	const KEYCODE_SPACE = 32;		
 	const KEYCODE_ARROW_UP = 38;
@@ -17,10 +17,10 @@ function Game () {
 	const canvas = document.getElementById('game__container');		
 	const context = canvas.getContext('2d');
 
-
 	// TEMPRORARY OPERATIONS
 	document.getElementsByClassName('menu__wraper')[0].style.display = 'none';
 	canvas.style.display = 'block';
+	canvas.style.border = '10px solid #fff';
 	canvas.style.backgroundImage = "url('../images/bg1.gif')";
 	canvas.style.backgroundSize = "cover";
 	canvas.style.backgroundPosition = 'center';
@@ -28,8 +28,6 @@ function Game () {
 
 
 	// GAME MAIN FUNCTIONS
-	
-
 	this.handleKeyDown = function (e) {
 		switch(e.keyCode) {
 			case KEYCODE_W:
@@ -74,6 +72,8 @@ function Game () {
 		}
 	}
 
+
+	// KEY BINIDINGS
 	document.onkeydown = this.handleKeyDown;
 	document.onkeyup   = this.handleKeyUp;
 }
