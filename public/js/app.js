@@ -107,4 +107,9 @@ window.onload = function () {
 		userData.nickname = this.value
 	})
 
+
+
+
+	// gameInit();
+	let game = new Game();
 }
