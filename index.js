@@ -4,11 +4,9 @@ const db = require('./db');
 
 const app = require('./server')
 
-
 const uri = "mongodb://root:qwerty78@centenairebatailledb-shard-00-00-bnck4.mongodb.net:27017,centenairebatailledb-shard-00-01-bnck4.mongodb.net:27017,centenairebatailledb-shard-00-02-bnck4.mongodb.net:27017/test?ssl=true&replicaSet=CentenaireBatailleDB-shard-0&authSource=admin&retryWrites=true";
 const hostname = 'localhost';
 const port = 3306;
-
 
 
 db.connect(uri, function(err) {
@@ -18,8 +16,6 @@ db.connect(uri, function(err) {
 	const server = app.listen(port, () => {
 		console.log(`Server running at http://${hostname}:${port}/`);
 	});
-
-
 
 	// sockets
 	const io = require('socket.io')(server);
