@@ -1,0 +1,269 @@
+/* ************************************************************** */
+/* *************************** RESET **************************** */
+/* ************************************************************** */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    font: 13px/16px 'Montserrat regular', sans-serif, Arial, Tahoma;
+    background: #fff;
+    /*overflow: hidden;*/
+    background: url('../images/bg2.jpg');
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+* {
+    margin: 0;
+    outline: none;
+    padding: 0;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    color: #686868;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+input {
+    -webkit-appearance: none;
+}
+
+.wraper {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* ************************************************************** */
+/* **********************  ОСНОВНЫЕ СТИЛИ *********************** */
+/* ************************************************************** */
+
+.wraper {
+    width: 960px;
+    height: 600px;
+    margin: 0 auto;
+    top: 50%;
+    position: relative;
+    margin-top: -300px;
+    display: block;
+    background: #fff;
+    overflow: hidden;
+}
+
+.menu__wraper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 600px;
+    border: 1px dashed #ccc;
+}
+
+.menu__block {
+    padding: 15px;
+}
+
+.menu__left-full {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    border-right: 1px dashed #ccc;
+    position: relative;
+}
+
+.menu__right-top {
+    border-bottom: 1px dashed #ccc;
+}
+
+.menu__right-bottom {
+}
+
+.character__wraper {
+    height: 80%;
+    position: relative;
+}
+
+.changer-btn__wrap {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+}
+
+.changer-btn__head {
+    /*align-self: flex-start;*/
+}
+
+.changer-btn__body {
+    /*align-self: center;*/
+}
+
+.changer-btn__foot {
+    /*align-self: flex-end;*/
+}
+
+.changer-btn__head,
+.changer-btn__body,
+.changer-btn__foot {
+    height: 40px;
+    width: 100%;
+    display: block;
+}
+
+.changer-btn-left,
+.changer-btn-right {
+    width: 40px;
+    height: 40px;
+    background: #32800ad1;
+    color: #fff;
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.changer-btn-left:hover,
+.changer-btn-right:hover {
+    background: #32800af7;
+}
+
+.changer-btn-left {
+    float: left;
+}
+
+.changer-btn-right {
+    float: right;
+}
+
+.changer-btn__body {
+    height: 80px;
+}
+
+.changer-btn__body span {
+    height: 80px;
+    width: 60px;
+    line-height: 80px;
+}
+
+.character__img {
+    height: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.nickname__wrap {
+    margin-top: 30px;
+    width: 100%;
+    display: block;
+}
+
+.nickname__wrap input {
+    height: 40px;
+    width: 100%;
+    border: 1px dashed #ccc;
+    padding: 0 15px;
+    font-size: 18px;
+}
+
+.login-form__title {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+
+.login__input {
+    width: 100%;
+    height: 40px;
+    border: 1px dashed #ccc;
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 40px;
+    margin: 15px auto;
+    border: none;
+    background: #32800ad1;
+    color: #fff;
+    display: block;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #32800af7;
+}
+
+#js-registration__form {
+    display: none;
+}
+
+.menu__wraper {
+    display: grid;
+}
+
+.game__container {
+    display: none;
+    background: #ccc;
+    width: 100%;
+    height: 600px;
+}

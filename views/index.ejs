@@ -1,103 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Centenaire bataillie</title>
+    <meta charset="UTF-8">
+    <title>Centenaire bataillie</title>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	
-	<link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
 
-	<div class="wraper">
-		<div class="header"></div>
-		<div class="container">
-			<div class="main__window">
-
-				<!-- Start menu wrapper -->
-				<div class="menu__wraper">
-					<div class="menu__block menu__left-full">
-						<div class="character__wraper">
-							<!-- кнопки выбора тела -->
-							<div class="changer-btn__wrap">
-								<div class="changer-btn__head">
-									<span class="changer-btn-left"><</span>
-									<span class="changer-btn-right">></span>
-								</div>
-								
-								<div class="changer-btn__body">
-									<span class="changer-btn-left"><</span>
-									<span class="changer-btn-right">></span>
-								</div>
-
-                    <div class="changer-btn__foot">
-                        <span class="changer-btn-left"><</span>
-                        <span class="changer-btn-right">></span>
-                    </div>
-                </div>
-
-                <img src="images/pers.jpg" alt="images/pers.jpg" class="character__img">
-            </div>
-
-            <div class="nickname__wrap">
-                <form action="" class="nickname-form" id="js-change__nickname">
-                    <input type="text" placeholder="Ebanashka" name="nickname" id="js-change_nickname-input">
-                </form>
-            </div>
-
-        </div>
-        <div class="menu__block menu__right-top">
-            <form action="" class="login__form log-reg__form" id="js-login__form">
-                <h2 class="login-form__title">Вход</h2>
+<div class="wraper">
+    <div class="header">
+        <h1>Centenaire bataillie</h1>
+    </div>
+    <div class="container">
+        <div class="menu__auth">
+            <form action="" class="login__form" id="js-login__form">
+                <h2 class="form__title">Вход</h2>
 
                 <input type="text" class="login__input" name="login" id="js-login_login" placeholder="login">
-                <input type="text" class="login__input" name="password" id="js-login_password"
+                <input type="password" class="login__input" name="password" id="js-login_password"
                        placeholder="password">
 
-                <input type="submit" value="вход" class="btn" id="js-login__submit">
+                <input type="submit" value="Вход" class="btn" id="js-login__submit">
                 <input type="submit" value="Регистрация" class="btn js-swap_form-btn">
             </form>
 
-            <form action="" class="log-reg__form" id="js-registration__form">
-                <h2 class="login-form__title">Регистрация</h2>
+            <form action="" class="registration__form" id="js-registration__form">
+                <h2 class="form__title">Регистрация</h2>
 
-                <input type="text" class="login__input" name="login" id="js-registration_login"
-                       placeholder="login">
-                <input type="text" class="login__input" name="password" id="js-registration_password"
+                <input type="text" class="login__input" name="login" id="js-registration_login" placeholder="login">
+                <input type="password" class="login__input" name="password" id="js-registration_password"
                        placeholder="password">
 
                 <input type="submit" value="Зарегистрироваться" class="btn" id="js-registration__submit">
-                <input type="submit" value="уже есть аккаунт" class="btn js-swap_form-btn">
-            </form>
-        </div>
-        <div class="menu__block menu__right-bottom">
-            <form action="" class="login__form">
-                <h2 class="login-form__title">Подключиться к серверу</h2>
-
-                <input type="text" class="login__input" name="server_id" id="js-server_id"
-                       placeholder="id#4839">
-                <input type="submit" value="вход" class="btn" id="js-connect_server__submit">
+                <input type="submit" value="Уже есть аккаунт" class="btn js-swap_form-btn">
             </form>
         </div>
     </div>
-    <!-- Start menu wrapper -->
+</div>
 
-				
-				<canvas id="game__container" class="game__container"></canvas>	
-			</div>
-		</div>
-	</div>
-
-<!--     
-    <span id="btn"> click </span>
-    <p id="result"> </p>
- -->
-	<script src="js/app.js"></script>
-    <!-- <script src="js/game.js"></script> -->
-    <!-- <script src="js/cliend.js"></script> -->
+<script src="js/index.js"></script>
 
 </body>
 </html>

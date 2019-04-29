@@ -1,73 +1,103 @@
+/**
+ * Подключаем модель users для доступа к данных
+ */
 const Users = require('../models/users');
 
-exports.test = (req, res) => {
-	var login = "root";
-
-	Users.testModel(login, (err, docs) => {
-		res.json({
-			ok: false, 
-			error: "Неправильный логин или пароль!",
-			fields: ['login', docs.message]
-		})
-	})
-}
-
 exports.register = (req, res) => {
-	const login = req.body.userName;
-	const password = req.body.userPassword;
-	
-	// console.log({
-	// 	login: req.body.userName,
-	// 	password: req.body.userPassword
-	// })
+    /**
+     * data -
+     * {
+     * - получаем из запроса POST данные
+     * }
+     * @type {{login: *, password: *}}
+     */
+    const data = {
+        login: req.body.userName,
+        password: req.body.userPassword
+    };
 
-	// create if users with same nickname doesn't exist
-
-	Users.checkUserExistance(login, (error, result) => {
-		// result should contain the user data if exist...
-		
-		if (!result) {
-			Users.create({
-				login: req.body.userName,
-				password: req.body.userPassword
-			}, (err, docs) => {
-				res.json({
-					ok: true, 
-					message: 'User created!'
-				})
-			})
-		} else {
-			res.json({
-				ok: false,
-				message: 'User with the same nickname already exist'
-			})
-		}
-	})
-}
+    Users.getUserByLogin(data.login, (error, result) => {
+        if (!result) {
+            Users.create(data, (err, docs) => {
+                res.json({
+                    ok: true,
+                    message: 'User created!'
+                })
+            })
+        } else {
+            res.json({
+                ok: false,
+                message: 'User with the same nickname already exist'
+            })
+        }
+    })
+};
 
 exports.login = (req, res) => {
-	console.log('logining with ' + req.body.userName)
+    /**
+     * data -
+     * {
+     * - получаем из запроса POST данные
+     * }
+     * @type {{login: *, password: *}}
+     */
+    const data = {
+        login: req.body.userName,
+        password: req.body.userPassword
+    };
 
-	console.log({
-		login: req.body.userName,
-		password: req.body.userPassword
-	})
+    Users.getUserByLogin(data.login, (err, docs) => {
+        if (docs !== null && data.password !== undefined) {
+            if (data.password === docs.password) {
+                Users.updateTokenAuthorization(docs.login, (err, docs) => {
+                    if (err === null) {
+                        const optionsCookie = {
+                            domain: req.headers["host"].split(":")[0],
+                            path: "/",
+                            sameSite: "strict",
+                            httpOnly: true,
+                            expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
+                        };
 
+                        /**
+                         * res.cookie -
+                         * {
+                         * -Устанавливаем куки
+                         * }
+                         */
+                        res.cookie("token", docs.value.token, optionsCookie);
+                        res.cookie("login", docs.value.login, optionsCookie);
+                        res.json({
+                            ok: true,
+                            message: "Redirect",
+                            url: "http://" + req.headers["host"] + "/user/" + docs.value.login + "/"
+                        });
+                    } else {
+                        res.json({
+                            ok: false,
+                            message: "Server down",
+                        });
+                    }
+                });
+            } else {
+                res.json({
+                    ok: false,
+                    message: "Wrong password or login"
+                });
+            }
+        } else {
+            res.json({
+                ok: false,
+                message: "Wrong password or login"
+            });
+        }
+    });
 
-
-	Users.testModel("login", (err, docs) => {
-		res.json({
-			ok: false, 
-			error: "Неправильный логин или пароль!",
-			fields: ['login', docs.message]
-		})
-	})
-}
-
+};
 
 
 exports.allUsers = (req, res) => {
-	Users.allUsers(function (err, docs) {
-		res.send(docs)
-	})
-}
+    Users.allUsers(function (err, docs) {
+        res.send(docs)
+    })
+};

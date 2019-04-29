@@ -5,12 +5,22 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -L"
+    "dev": "npm install && npm audit fix && nodemon -L"
   },
   "nodemonConfig": {
-    "verbose" : true,
-    "ignore": ["node_modules/*"],
-    "watch" : ["public/*", "index.js", "views/*"],
+    "verbose": true,
+    "ignore": [
+      "node_modules/*"
+    ],
+    "watch": [
+      "public/*",
+      "views/*",
+      "routes/*",
+      "models/*",
+      "controllers/*",
+      "index.js",
+      "server.js"
+    ],
     "restartable": "rs",
     "ext": "js json css ejs"
   },
@@ -26,12 +36,13 @@
   "homepage": "https://github.com/patison5/CentenaireBataille#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "html": "^1.0.0",
     "mongodb": "^3.1.13",
-    "npm": "^6.7.0",
+    "npm": "^6.9.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   }
