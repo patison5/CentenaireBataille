@@ -30,7 +30,7 @@ db.connect(uri, function(err) {
 	    socket.on('change_username', (data) => {
 	        console.log('work motherfucker!')
 	        console.log('username changed' +  data.username)
-	        socket.username = data.usernam;
+	        socket.username = data.username;
 	    })
 
 	    socket.on('new_message', (data) => {
@@ -41,6 +41,7 @@ db.connect(uri, function(err) {
 	    socket.on('connection', function() {
 	        console.log("connection: ", socket.id);
 	    });
+	    
 	    socket.on('disconnect', function() {
 	        console.log("disconnect: ", socket.id);
 	        setTimeout(() => socket.disconnect(true), 5000);
