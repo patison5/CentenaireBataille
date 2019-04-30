@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "norm": "nodemon -L",
     "dev": "npm install && npm audit fix && nodemon -L"
   },
   "nodemonConfig": {
@@ -18,8 +19,8 @@
       "routes/*",
       "models/*",
       "controllers/*",
-      "index.js",
-      "server.js"
+      "utils/*",
+      "index.js"
     ],
     "restartable": "rs",
     "ext": "js json css ejs"

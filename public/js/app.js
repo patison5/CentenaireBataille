@@ -1,12 +1,3 @@
-function get_cookie(cookie_name) {
-    var results = document.cookie.match('(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
-
-    if (results)
-        return (unescape(results[2]));
-    else
-        return null;
-}
-
 window.onload = function () {
 
     /**
@@ -19,44 +10,59 @@ window.onload = function () {
 
     socket = io.connect(socketUrl);
 
-
+    /**
+     * Elements control user
+     * @type {HTMLElement | null}
+     */
     let connectServerSubmit = document.getElementById('js-connect_server__submit'),
-        changeNicknameInput = document.getElementById('js-change_nickname-input');
+        changeNicknameInput = document.getElementById('js-change_nickname-input'),
+        getListRooms = document.getElementById('js-list_rooms__submit');
 
+    /**
+     * Get list of Rooms
+     */
+    getListRooms.addEventListener('click', function (e) {
+        e.preventDefault();
+        socket.emit("getRooms");
+    });
 
-    // connect_server__submit action
+    /**
+     * Choose room
+     */
     connectServerSubmit.addEventListener('click', function (e) {
         e.preventDefault();
 
         let data = {
-            login: document.cookie,
             serverId: document.getElementById('js-server_id').value
         };
-        console.log(document.cookie);
-        console.log(window.cookies);
-        socket.emit("connectServer", data);
 
-        $.ajax({
-            type: "post",
-            url: "/api/connect/",
-            dataType: "json",
-            contentType: "application/json; charset=UTF-8",
-            data: JSON.stringify(data, null, 2)
-        }).done(function (data) {
-            console.log(data);
-        });
-
-        console.log(data)
+        socket.emit("setRoom", data);
     });
 
-
+    /**
+     * Change nickname
+     */
     changeNicknameInput.addEventListener('keyup', function (e) {
-        e.preventDefault();
 
-        userData.nickname = this.value
+        if (e.code === "Enter") {
+            let data = {
+                nickname: changeNicknameInput.value
+            };
+
+            socket.emit("changeNickname", data);
+        }
+    });
+
+    /**
+     * Receive messages from server
+     */
+    socket.on("listRooms", function (data) {
+        console.log("Rooms: " + data);
+    });
+    socket.on("sendRoom", function (data) {
+        console.log(data);
+    });
+    socket.on("nicknameChanged", function () {
+        location.reload();
     })
-
-
-    // gameInit();
-    //let game = new Game();
 };

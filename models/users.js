@@ -1,5 +1,4 @@
-const ObjectID = require('mongodb').ObjectID;
-const db = require('../db');
+const db = require('../utils/db/db');
 const crypto = require('crypto');
 
 
@@ -31,7 +30,7 @@ exports.allUsers = function (callback) {
 };
 
 /**
- * getUser {
+ * getUserByLogin, getUserByToken {
  * - получам одну запись
  * }
  * @param login
@@ -47,6 +46,10 @@ exports.getUserByToken = function (token, callback) {
     db.get().collection('Users').findOne({token: token}, function (err, docs) {
         callback(err, docs);
     });
+};
+
+exports.updateNickname = function (login, nickname) {
+    db.get().collection("Users").updateOne({login: login}, {$set: {nickname: nickname}});
 };
 
 exports.updateTokenAuthorization = function (login, callback) {

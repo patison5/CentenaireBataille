@@ -1,12 +1,13 @@
 // Создаем приложение с помощью Express
-const routes = require('./routes');
+const routes = require('../../routes/index');
 const express = require('express');
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+
+
 const app = express();
 
 app.use(express.static('public'));
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -15,6 +16,9 @@ app.use(bodyParser.json());
  */
 app.use(cookieParser());
 
+/**
+ * Включаем обработку контента на выдачу
+ */
 app.set("view engine", "ejs");
 
 /**

@@ -12,11 +12,11 @@ exports.connect = function (url, collback) {
 
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, database) {
 		if (err) {
-			console.log("Some shit is going on again! Check the fucking connection to the MongoDB!!!")
+            console.log("Some shit is going on again! Check the fucking connection to the MongoDB!!!");
 			return collback(err);
 		}
 
-		console.log("\nYou did it, bro! You connected to the MongoDB!!!\n")
+        console.log("\nYou did it, bro! You connected to the MongoDB!!!\n");
 
 		state.db = database.db('rootdb');
 
@@ -24,8 +24,8 @@ exports.connect = function (url, collback) {
 
 		collback();
 	});
-}
+};
 
 exports.get = function () {
 	return state.db;
-}
+};

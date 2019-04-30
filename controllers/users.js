@@ -13,6 +13,7 @@ exports.register = (req, res) => {
      */
     const data = {
         login: req.body.userName,
+        nickname: req.body.userName,
         password: req.body.userPassword
     };
 
@@ -52,10 +53,10 @@ exports.login = (req, res) => {
                 Users.updateTokenAuthorization(docs.login, (err, docs) => {
                     if (err === null) {
                         const optionsCookie = {
-                            domain: req.headers["host"].split(":")[0],
+                            domain: null,
                             path: "/",
-                            sameSite: "strict",
                             httpOnly: true,
+                            secure: false,
                             expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
                         };
 
