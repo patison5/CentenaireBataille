@@ -1,14 +1,48 @@
 const Utils = require("../utils/utils");
 
-const socketIo = require("../models/socket");
+const mSocket = require("../models/socket");
 const Users = require("../models/users");
+const Battles = require("../models/battle");
+/**
+ * Return ID client
+ * @param socket
+ */
+exports.getID = function (socket) {
+    socket.emit("getID", socket.id);
+};
 
-
-exports.setRoom = function (data, io, socket) {
+exports.createBattle = function (data, io, socket) {
     let cookie = Utils.getCookie(socket);
-    socket.join(data.serverId, () => {
-        io.to(data.serverId).emit('sendRoom', cookie.get("login"));
+
+    Battles.createBattle(cookie.get("login"), data.serverId, (answer) => {
+        socket.emit("createBattle", answer);
     });
+
+};
+
+exports.enterBattle = function (data, io, socket) {
+    let cookie = Utils.getCookie(socket);
+
+    Battles.enterBattle(data.idBattle, cookie.get("login"), (answer) => {
+        socket.emit("enterBattle", answer);
+    });
+};
+
+exports.connectBattle = function (data, io, socket) {
+    let cookie = Utils.getCookie(socket);
+    socket.join(data.battleId, () => {
+        socket.to(data.battleId).emit('message', {login: cookie.get("login")});
+    });
+};
+exports.sendPos = function (data, io, socket) {
+
+    let room = 0;
+    for (let r in socket.rooms) {
+        if (r !== socket.id) {
+            room = r;
+        }
+    }
+    socket.to(room).emit('message', data);
 };
 
 exports.changeNickname = function (data, io, socket) {
@@ -20,18 +54,10 @@ exports.changeNickname = function (data, io, socket) {
     socket.emit('nicknameChanged', null);
 };
 
-exports.getRooms = function (data, io, socket) {
-    let arr = [];
-
-
-    let rooms = io.sockets.adapter.rooms;
-    for (let room in rooms) {
-        if (rooms.hasOwnProperty(room)) {
-            arr.push(room);
-        }
-    }
-
-    socket.emit('listRooms', arr);
+exports.getBattles = function (io, socket) {
+    Battles.getBattles((result) => {
+        socket.emit('listBattles', result);
+    });
 };
 
 exports.getCountClients = function (io) {

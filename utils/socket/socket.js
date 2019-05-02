@@ -1,18 +1,21 @@
 const controller = require("../../controllers/sockets");
-const Utils = require("../utils");
-const state = {
+let state = {
     server: null,
     socket: null
+};
+
+exports.state = function () {
+    return state;
 };
 
 exports.set = function (server) {
     state.server = server;
 };
 exports.get = function () {
-    console.log("get " + state.socket);
     return state.socket;
 };
-exports.init = function () {
+
+exports.init = function (callback) {
     state.socket = require('socket.io')(state.server);
     /**
      * Связываемся по сокету с подключившемся клиентом
@@ -20,21 +23,33 @@ exports.init = function () {
      *
      */
     state.socket.on("connection", function (socket) {
-
-        socket.id = Utils.getCookie(socket).get("login");
-
-        socket.on("setRoom", function (data) {
-            controller.setRoom(data, state.socket, socket);
+        socket.on("getID", function () {
+            controller.getID(socket);
+        });
+        socket.on("createBattle", function (data) {
+            controller.createBattle(data, state.socket, socket);
+        });
+        socket.on("enterBattle", function (data) {
+            controller.enterBattle(data, state.socket, socket);
+        });
+        socket.on("connectBattle", function (data) {
+            controller.connectBattle(data, state.socket, socket);
+        });
+        socket.on("sendPos", function (data) {
+            controller.sendPos(data, state.socket, socket);
         });
         socket.on("changeNickname", function (data) {
             controller.changeNickname(data, state.socket, socket);
         });
         socket.on("getCountUsers", function () {
-            controller.getCountClients(state.socket);
+            controller.getCountClients(state.socket, socket);
         });
-        socket.on("getRooms", function (data) {
-            controller.getRooms(data, state.socket, socket);
+        socket.on("listBattles", function () {
+            controller.getBattles(state.socket, socket);
+        });
+        socket.on('disconnect', function () {
+            console.log('Got disconnect: ' + socket.id);
         });
     });
-
+    callback("Socket listening");
 };

@@ -10,26 +10,34 @@ const hostname = 'localhost';
 const port = 8080;
 
 /**
- * Подключение к базе данных
- * @param {db}
- */
-db.connect(uri, function (err) {
-    if (err)
-        return console.log(err);
-});
-
-/**
  *  Говорим express слушать порт (port)
  *  server - ссылка на порт, котоырй слушаем
  * @param (server)
  * @type {http.Server}
  */
 const server = app.listen(port, () => {
+    console.log("Server created !");
     console.log(`Server running at http://${hostname}:${port}/`);
+
+    /**
+     * Иницилизируем класс работы со сокетами
+     */
+
+    socket.set(server);
+    socket.init((data) => {
+        console.log(data);
+    });
+
+    /**
+     * Подключение к базе данных
+     * @param {db}
+     */
+    db.connect(uri, (err) => {
+        if (!err) {
+            console.log("Database connected!")
+        } else {
+            return console.log(err);
+        }
+    });
 });
 
-/**
- * Иницилизируем класс работы со сокетами
- */
-socket.set(server);
-socket.init();

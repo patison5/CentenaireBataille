@@ -23,3 +23,6 @@ exports.goToIndex = (req, res) => {
         }
     });
 };
+exports.battle = (req, res) => {
+    res.render("battle");
+};

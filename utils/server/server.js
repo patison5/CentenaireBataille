@@ -35,6 +35,9 @@ app.get('/index', (req, res) => {
     res.render('index')
 });
 
+/**
+ * Личный кабинет пользователя
+ */
 app.use("/user", routes.menuUser);
 
 /**
