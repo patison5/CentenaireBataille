@@ -1,6 +1,5 @@
 const Utils = require("../utils/utils");
 
-const mSocket = require("../models/socket");
 const Users = require("../models/users");
 const Battles = require("../models/battle");
 /**
@@ -72,7 +71,18 @@ exports.getBattles = function (io, socket) {
         socket.emit('listBattles', result);
     });
 };
-
+exports.getCurrentBattle = function (io, socket) {
+    let cookie = Utils.getCookie(socket);
+    Battles.getBattlesUser(cookie.get("login"), (result) => {
+        socket.emit('getCurrentBattle', result);
+    });
+};
+exports.reConnect = function (io, socket) {
+    let cookie = Utils.getCookie(socket);
+    Battles.getBattlesUser(cookie.get("login"), (result) => {
+        socket.emit('reConnect', result);
+    });
+};
 exports.getCountClients = function (io) {
     io.emit('countUsers', io.engine.clientsCount);
 };

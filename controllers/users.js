@@ -14,7 +14,8 @@ exports.register = (req, res) => {
     const data = {
         login: req.body.userName,
         nickname: req.body.userName,
-        password: req.body.userPassword
+        password: req.body.userPassword,
+        battle: null
     };
 
     /**

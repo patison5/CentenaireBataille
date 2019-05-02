@@ -50,6 +50,18 @@ exports.getUserByToken = function (token, callback) {
 };
 
 /**
+ * Обновление текущего сражения
+ * @param (login)
+ * @param (battleId)
+ * @param (callback)
+ */
+exports.updateBattle = function (login, battleId, callback) {
+    db.get().collection("Users").updateOne({login: login}, {$set: {battle: battleId}}, function (err) {
+        callback(err);
+    })
+};
+
+/**
  * Обновляем никнейм пользователя
  * @param (login)
  * @param (nickname)

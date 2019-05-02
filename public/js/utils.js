@@ -1,7 +1,7 @@
 /**
  * Вывод сообщения от сервера пользователю
  */
-let showMessgae = function (data, buttonEvent, buttonText) {
+let showMessgae = function (message, buttonEvent, buttonText, data) {
 
     $(".message_wrap_jq").remove();
 
@@ -9,21 +9,27 @@ let showMessgae = function (data, buttonEvent, buttonText) {
                                     <div class="message_wrap">
                                         <div class="message_container">
                                             <div class="message">
-                                                <p>${data.message}</p>
+                                                <p>${message}</p>
                                             </div>
-                                            <div class="message_button" data-event="${buttonEvent}">
-                                                <div class="button">
+                                            <div class="message_button">
+                                                <div data-event="${buttonEvent}" class="button">
                                                     <p>${buttonText}</p>
-                                                </div>    
+                                                </div>
+                                                <div class="button close">
+                                                    <p>Закрыть</p>
+                                                </div>
                                             </div>
                                          </div>
                                      </div> 
                               </div>`;
     $("body").append(template);
 
-    let elem = $(".message_button").last();
-    elem.click(function () {
+    let buttons = $(".message_wrap_jq .message_button .button");
+    (buttons[0]).addEventListener("click", function () {
         closeMessage($(this)[0], data);
+    });
+    buttons[1].addEventListener("click", () => {
+        $(".message_wrap_jq").last().fadeOut(1000);
     });
     $(".message_wrap_jq").fadeIn(1000);
 };
@@ -32,6 +38,7 @@ let showMessgae = function (data, buttonEvent, buttonText) {
  * Закрытие сообщения пользователя
  */
 let closeMessage = function (elem, data) {
+
     let event = elem.getAttribute("data-event");
 
     if (event === "registr_event") {
@@ -50,5 +57,11 @@ let closeMessage = function (elem, data) {
     }
     if (event === "createBattle") {
         $(".message_wrap_jq").last().fadeOut(1000);
+    }
+    if (event === "error") {
+        $(".message_wrap_jq").last().fadeOut(1000);
+    }
+    if (event === "current_battle") {
+        socket.emit("reConnect");
     }
 };

@@ -44,13 +44,13 @@ window.onload = function () {
             data: JSON.stringify(data, null, 2)
         }).success(function (data) {
             if (data.ok) {
-                showMessgae(data, "login_event", "Ок");
+                showMessgae(data.message, "registr_event", "Ок", data);
                 setTimeout(() => {
                     window.location = data.url;
                 }, 1000);
             }
             else {
-                showMessgae(data, "login_event", "Ок");
+                showMessgae(data.message, "login_event", "Ок", data);
             }
         });
     });
@@ -74,9 +74,9 @@ window.onload = function () {
             data: JSON.stringify(data, null, 2)
         }).success(function (data) {
             if (data.ok) {
-                showMessgae(data, "registr_event", "Ок");
+                showMessgae(data.message, "registr_event", "Ок", data);
             } else {
-                showMessgae(data, "registr_event", "Ок");
+                showMessgae(data.message, "registr_event", "Ок", data);
             }
         });
     });

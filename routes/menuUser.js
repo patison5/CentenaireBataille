@@ -7,6 +7,7 @@ const router = express.Router();
  * Домашний католог личного кабинета
  */
 router.get("/", userController.goToIndex);
+router.get(/^\/[a-zA-Z0-9]+$/, userController.goToIndex);
 
 /**
  * Домашний католог личного кабинета (основной)

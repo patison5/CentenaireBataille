@@ -16,6 +16,11 @@ window.onload = function () {
     socket.emit("getID");
 
     /**
+     * Получаем текущие сражения
+     */
+    socket.emit("getCurrentBattle");
+
+    /**
      * Elements control user
      * @type {HTMLElement | null}
      */
@@ -73,6 +78,14 @@ window.onload = function () {
         console.log("ID: " + data);
     });
 
+    socket.on("getCurrentBattle", (data) => {
+        if (data.message.length > 0) {
+            let text = "У вас есть незаконченная битва: " + data.message[0].name + " !</p> <br />" +
+                "<p>Присоединиться ?</p>";
+            showMessgae(text, "current_battle", "Присоединиться", data);
+        }
+    });
+
     socket.on("listBattles", function (data) {
         $(".battles_container").empty();
         let number = 0;
@@ -117,11 +130,11 @@ window.onload = function () {
         for (let key in data) {
             temp += key + " : " + data[key];
         }
-        showMessgae(data, "createBattle", "Ок");
+        showMessgae(data.message, "createBattle", "Ок", data);
     });
 
     socket.on("nicknameChanged", function (data) {
-        showMessgae(data, "nickname_changed", "Ок");
+        showMessgae(data.message, "nickname_changed", "Ок", data);
         if (data.ok) {
             setTimeout(() => {
                 location.reload();
@@ -130,6 +143,14 @@ window.onload = function () {
     });
 
     socket.on("enterBattle", function (data) {
-        document.location.href = window.location.href + "battle/?battle=" + data.message._id;
+        console.log(data);
+        if (data.ok) {
+            document.location.href = window.location.href + "battle/?battle=" + data.message._id;
+        } else {
+            showMessgae(data.message, "error", "Ок", data);
+        }
+    });
+    socket.on("reConnect", (data) => {
+        document.location.href = window.location.href + "battle/?battle=" + data.message[0]._id;
     });
 };

@@ -35,11 +35,17 @@ exports.init = function (callback) {
         socket.on("connectBattle", function (data) {
             controller.connectBattle(data, state.socket, socket);
         });
+        socket.on("reConnect", function () {
+            controller.reConnect(state.socket, socket);
+        });
         socket.on("sendPos", function (data) {
             controller.sendPos(data, state.socket, socket);
         });
         socket.on("endBattle", function (data) {
             controller.endBattle(data, state.socket, socket);
+        });
+        socket.on("getCurrentBattle", function () {
+            controller.getCurrentBattle(state.socket, socket);
         });
         socket.on("changeNickname", function (data) {
             controller.changeNickname(data, state.socket, socket);

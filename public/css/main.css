@@ -129,6 +129,7 @@ input {
     padding: 10px;
     font-size: 19px;
     text-indent: 5px;
+    text-align: center;
 }
 
 .message_button {
@@ -140,11 +141,13 @@ input {
 }
 
 .message_button .button {
-    width: 100px;
+    width: auto;
     height: 50px;
     line-height: 50px;
     text-align: center;
     font-size: 19px;
     background: #6EC145;
     cursor: pointer;
+    padding: 0 20px;
+    margin: 0 10px;
 }

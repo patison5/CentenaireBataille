@@ -25,7 +25,7 @@
                     <p>#</p>
                 </div>
                 <div class="nameBattle_prop">
-                    <p>Имя сражения</p>
+                    <p>Cражения</p>
                 </div>
                 <div class="name_user_prop">
                     <p>Игрок</p>
@@ -97,7 +97,12 @@
                 <div class="prop_player">
                     <div><p>Token</p></div>
                     <div><p>:</p></div>
-                    <div><p><%= data.token %></p></div>
+                    <div><p><%= data.token.slice(1, 10) + "..." %></p></div>
+                </div>
+                <div data-battle="id-battle" class="prop_player">
+                    <div><p>Battle</p></div>
+                    <div><p>:</p></div>
+                    <div><p><%= data.battle !== null ? data.battle : "Нет" %></p></div>
                 </div>
             </div>
         </div>
@@ -113,8 +118,10 @@
                 <h2 class="login-form__title">Подключиться к серверу</h2>
 
                 <input type="text" class="login__input" name="server_id" id="js-server_id" placeholder="id#4839">
-                <input type="submit" value="Список комнат" class="btn" id="js-list_rooms__submit">
-                <input type="submit" value="Вход" class="btn" id="js-connect_server__submit">
+                <div class="message_button">
+                    <input type="submit" value="Список комнат" class="button" id="js-list_rooms__submit">
+                    <input type="submit" value="Вход" class="button" id="js-connect_server__submit">
+                </div>
             </form>
         </div>
     </div>
