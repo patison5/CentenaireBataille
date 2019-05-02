@@ -35,7 +35,7 @@ function Battle() {
                 break;
 
             case KEYCODE_A:
-                socket.emit("sendPos", 'moving back');
+                socket.emit("endBattle", 'moving back');
                 break;
 
             case KEYCODE_D:
@@ -111,6 +111,9 @@ window.onload = function () {
     socket.emit("connectBattle", data);
 
     socket.on("message", function (data) {
+        console.log(data);
+    });
+    socket.on("endBattle", function (data) {
         console.log(data);
     });
     let game = new Battle();

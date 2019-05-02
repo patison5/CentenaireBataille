@@ -16,6 +16,23 @@ exports.getBattles = function (callback) {
     });
 };
 
+exports.getBattlesUser = function (login, callback) {
+    let answer = {
+        ok: false,
+        message: null
+    };
+
+    db.get().collection("Battles").find({user1: login, end: false}).toArray((err, battles) => {
+        if (!err) {
+            answer.ok = true;
+            answer.message = battles;
+        } else {
+            answer.message = "Error: " + err;
+        }
+        callback(answer);
+    });
+};
+
 exports.createBattle = function (userLogin, name, callback) {
 
     let battle = {
@@ -42,8 +59,12 @@ exports.createBattle = function (userLogin, name, callback) {
                 callback(answer);
             });
         } else {
-            answer.message = "Вы уже создали сражение ! Сражение: ";
-            callback(answer);
+            let existNameBattle = "";
+            this.getBattlesUser(userLogin, (d) => {
+                existNameBattle = d.message[0].name;
+                answer.message = "Вы уже создали сражение ! Сражение: " + existNameBattle;
+                callback(answer);
+            });
         }
     });
 };
@@ -65,4 +86,25 @@ exports.enterBattle = function (idBattle, userLogin, callback) {
         }
         callback(answer);
     })
+};
+
+exports.endBattle = function (idBattle, callback) {
+
+    let answer = {
+        ok: false,
+        message: "",
+        systemError: ""
+    };
+
+    db.get().collection("Battles").findOneAndUpdate({_id: db.getId(idBattle)}, {$set: {end: true}}, {returnOriginal: false}, function (err, docs) {
+        if (!err) {
+            answer.ok = true;
+            console.log(docs);
+            answer.message = "Battle \"" + docs.value.name + "\" ended !";
+        } else {
+            answer.systemError = err;
+        }
+        callback(answer);
+    })
+
 };

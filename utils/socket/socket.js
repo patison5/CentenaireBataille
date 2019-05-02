@@ -38,6 +38,9 @@ exports.init = function (callback) {
         socket.on("sendPos", function (data) {
             controller.sendPos(data, state.socket, socket);
         });
+        socket.on("endBattle", function (data) {
+            controller.endBattle(data, state.socket, socket);
+        });
         socket.on("changeNickname", function (data) {
             controller.changeNickname(data, state.socket, socket);
         });

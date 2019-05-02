@@ -1,10 +1,13 @@
-const MongoClient = require('mongodb').MongoClient;
+const db = require('mongodb');
+const MongoClient = db.MongoClient;
+
 /**
  * state - массив сущностей db
  *        db - ссылка на определенную базу данных (rootDb)
  */
 const state = {
-	db: null
+    db: null,
+    dbClear: db
 };
 /**
  * Инициализация базы данных
@@ -15,6 +18,7 @@ exports.connect = function (url, callback) {
 	MongoClient.connect(url, { useNewUrlParser: true }, function(err, database) {
         if (!err) {
             state.db = database.db('rootdb');
+            state.db1 = database;
             callback();
         } else {
             callback(err);
@@ -28,4 +32,7 @@ exports.connect = function (url, callback) {
  */
 exports.get = function () {
     return state.db;
+};
+exports.getId = function (id) {
+    return new state.dbClear.ObjectId(id);
 };

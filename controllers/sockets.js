@@ -44,6 +44,17 @@ exports.sendPos = function (data, io, socket) {
     }
     socket.to(room).emit('message', data);
 };
+exports.endBattle = function (data, io, socket) {
+    let room = 0;
+    for (let r in socket.rooms) {
+        if (r !== socket.id) {
+            room = r;
+        }
+    }
+    Battles.endBattle(room, (data) => {
+        io.sockets.to(room).emit('endBattle', data);
+    });
+};
 
 exports.changeNickname = function (data, io, socket) {
     let cookie = Utils.getCookie(socket);

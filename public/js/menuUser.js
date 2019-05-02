@@ -117,7 +117,7 @@ window.onload = function () {
         for (let key in data) {
             temp += key + " : " + data[key];
         }
-        console.log("Created room:" + temp);
+        showMessgae(data, "createBattle", "Ок");
     });
 
     socket.on("nicknameChanged", function (data) {

@@ -48,4 +48,7 @@ let closeMessage = function (elem, data) {
     if (event === "nickname_changed") {
         $(".message_wrap_jq").last().fadeOut(1000);
     }
+    if (event === "createBattle") {
+        $(".message_wrap_jq").last().fadeOut(1000);
+    }
 };
