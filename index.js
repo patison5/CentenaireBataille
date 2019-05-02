@@ -12,8 +12,7 @@ const port = 8080;
 /**
  *  Говорим express слушать порт (port)
  *  server - ссылка на порт, котоырй слушаем
- * @param (server)
- * @type {http.Server}
+ * @param (port) - порт сервера
  */
 const server = app.listen(port, () => {
     console.log("Server created !");
@@ -21,6 +20,7 @@ const server = app.listen(port, () => {
 
     /**
      * Иницилизируем класс работы со сокетами
+     * @param(server) - сервер Express
      */
 
     socket.set(server);
@@ -30,7 +30,7 @@ const server = app.listen(port, () => {
 
     /**
      * Подключение к базе данных
-     * @param {db}
+     * @param {url} - ссылка на базу данных
      */
     db.connect(uri, (err) => {
         if (!err) {

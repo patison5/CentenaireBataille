@@ -43,12 +43,17 @@ window.onload = function () {
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(data, null, 2)
         }).success(function (data) {
-            if (data.url !== undefined) {
-                window.location.href = data.url;
+            if (data.ok) {
+                showMessgae(data, "login_event", "Ок");
+                setTimeout(() => {
+                    window.location = data.url;
+                }, 1000);
+            }
+            else {
+                showMessgae(data, "login_event", "Ок");
             }
         });
     });
-
 
     /**
      * Отправка на сервер регистрационных данных
@@ -67,8 +72,13 @@ window.onload = function () {
             dataType: "json",
             contentType: "application/json; charset=UTF-8",
             data: JSON.stringify(data, null, 2)
-        }).done(function (data) {
-
+        }).success(function (data) {
+            if (data.ok) {
+                showMessgae(data, "registr_event", "Ок");
+            } else {
+                showMessgae(data, "registr_event", "Ок");
+            }
         });
     });
-};
+}
+;

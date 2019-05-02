@@ -9,10 +9,9 @@ const crypto = require('crypto');
  * @param user
  * @param callback
  */
-
 exports.create = function (user, callback) {
-    db.get().collection('Users').insert(user, function (err, docs) {
-        callback(err, docs)
+    db.get().collection('Users').insert(user, function (err) {
+        callback(err);
     })
 };
 
@@ -22,7 +21,6 @@ exports.create = function (user, callback) {
  * }
  * @param callback
  */
-
 exports.allUsers = function (callback) {
     db.get().collection('Users').find().toArray(function (err, docs) {
         callback(err, docs);
@@ -30,9 +28,7 @@ exports.allUsers = function (callback) {
 };
 
 /**
- * getUserByLogin, getUserByToken {
- * - получам одну запись
- * }
+ * Получаем пользователя по его логину
  * @param login
  * @param callback
  */
@@ -42,16 +38,46 @@ exports.getUserByLogin = function (login, callback) {
     });
 };
 
+/**
+ * Получаем пользователя по его токену
+ * @param token
+ * @param callback
+ */
 exports.getUserByToken = function (token, callback) {
     db.get().collection('Users').findOne({token: token}, function (err, docs) {
         callback(err, docs);
     });
 };
 
-exports.updateNickname = function (login, nickname) {
-    db.get().collection("Users").updateOne({login: login}, {$set: {nickname: nickname}});
+/**
+ * Обновляем никнейм пользователя
+ * @param (login)
+ * @param (nickname)
+ * @param (callback)
+ */
+exports.updateNickname = function (login, nickname, callback) {
+    let answer = {
+        ok: false,
+        message: "Can't update nickname",
+        systemError: ""
+    };
+
+    db.get().collection("Users").findOneAndUpdate({login: login}, {$set: {nickname: nickname}}, {returnOriginal: false}, function (err, user) {
+        if (!err && user) {
+            answer.ok = true;
+            answer.message = "Nickname changed ! New nickname: " + user.value.nickname;
+        } else {
+            answer.systemError = err;
+        }
+        callback(answer);
+    });
 };
 
+/**
+ * Устанавливает токен авторицаа пользователя
+ * @param login
+ * @param callback
+ */
 exports.updateTokenAuthorization = function (login, callback) {
     /**
      * secret, token -

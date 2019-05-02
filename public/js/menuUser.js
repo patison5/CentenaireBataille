@@ -120,8 +120,13 @@ window.onload = function () {
         console.log("Created room:" + temp);
     });
 
-    socket.on("nicknameChanged", function () {
-        location.reload();
+    socket.on("nicknameChanged", function (data) {
+        showMessgae(data, "nickname_changed", "Ок");
+        if (data.ok) {
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        }
     });
 
     socket.on("enterBattle", function (data) {

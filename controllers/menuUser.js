@@ -2,6 +2,7 @@ const Users = require('../models/users');
 
 exports.index = (req, res) => {
     let user = "";
+    console.log("cookie: " + req.cookies["token"]);
     Users.getUserByToken(req.cookies["token"], function (err, u) {
         user = u;
         if (user) {
@@ -14,6 +15,7 @@ exports.index = (req, res) => {
 
 exports.goToIndex = (req, res) => {
     let user = "";
+    console.log(req.cookies["token"]);
     Users.getUserByToken(req.cookies["token"], function (err, u) {
         user = u;
         if (user) {

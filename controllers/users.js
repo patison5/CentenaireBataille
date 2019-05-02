@@ -9,7 +9,7 @@ exports.register = (req, res) => {
      * {
      * - получаем из запроса POST данные
      * }
-     * @type {{login: *, password: *}}
+     * @type {{login: *, nickname: *, password: *}}
      */
     const data = {
         login: req.body.userName,
@@ -17,18 +17,29 @@ exports.register = (req, res) => {
         password: req.body.userPassword
     };
 
+    /**
+     * Получаем данные пользователя по логину
+     *      -Если такой пользователь есть, то выводим ошибку, о том что пользователь существует
+     */
     Users.getUserByLogin(data.login, (error, result) => {
         if (!result) {
-            Users.create(data, (err, docs) => {
-                res.json({
-                    ok: true,
-                    message: 'User created!'
-                })
+            Users.create(data, (err) => {
+                if (!err) {
+                    res.json({
+                        ok: true,
+                        message: 'User created!'
+                    });
+                } else {
+                    res.json({
+                        ok: false,
+                        message: "Cann't registr"
+                    });
+                }
             })
         } else {
             res.json({
                 ok: false,
-                message: 'User with the same nickname already exist'
+                message: 'User with the same login already exist'
             })
         }
     })
@@ -46,12 +57,27 @@ exports.login = (req, res) => {
         login: req.body.userName,
         password: req.body.userPassword
     };
-
+    /**
+     * Получаем пользователя о введенному логину
+     */
     Users.getUserByLogin(data.login, (err, docs) => {
+        /**
+         * Проверяем нашелся ли пользватель
+         */
         if (docs !== null && data.password !== undefined) {
+            /**
+             * Проверяем совпадают ли пароли
+             */
             if (data.password === docs.password) {
+                /**
+                 * Устанавливаем токен авторизации пользователя
+                 */
                 Users.updateTokenAuthorization(docs.login, (err, docs) => {
-                    if (err === null) {
+                    if (!err) {
+                        /**
+                         * Свойства куки
+                         * @type {{domain: null, path: string, httpOnly: boolean, secure: boolean, expires: Date}}
+                         */
                         const optionsCookie = {
                             domain: null,
                             path: "/",
@@ -68,6 +94,7 @@ exports.login = (req, res) => {
                          */
                         res.cookie("token", docs.value.token, optionsCookie);
                         res.cookie("login", docs.value.login, optionsCookie);
+
                         res.json({
                             ok: true,
                             message: "Redirect",
@@ -76,7 +103,7 @@ exports.login = (req, res) => {
                     } else {
                         res.json({
                             ok: false,
-                            message: "Server down",
+                            message: "Server down"
                         });
                     }
                 });

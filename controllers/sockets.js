@@ -49,9 +49,11 @@ exports.changeNickname = function (data, io, socket) {
     let cookie = Utils.getCookie(socket);
 
     Users.getUserByToken(cookie.get("token"), function (err, u) {
-        Users.updateNickname(u.login, data.nickname);
+        Users.updateNickname(u.login, data.nickname, (data) => {
+            socket.emit('nicknameChanged', data);
+        });
     });
-    socket.emit('nicknameChanged', null);
+
 };
 
 exports.getBattles = function (io, socket) {

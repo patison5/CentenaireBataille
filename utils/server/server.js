@@ -7,7 +7,14 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
+/**
+ * Установка папки статики
+ */
 app.use(express.static('public'));
+
+/**
+ * bodyParser - обработка параметров запроса
+ */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -22,16 +29,9 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 
 /**
- * Вывод index страницы по адресу /
+ * Вывод index страницы по адресу /, /index
  */
-app.get('/', (req, res) => {
-    res.render('index')
-});
-
-/**
- * Вывод index страницы по адресу /index
- */
-app.get('/index', (req, res) => {
+app.get(/^\/(index|)$/, (req, res) => {
     res.render('index')
 });
 

@@ -1,3 +1,7 @@
+/**
+ * Получение куки пользователя из сокета
+ * @param socket - сокет пользователя
+ */
 exports.getCookie = function (socket) {
     let cookie = new Map();
     socket.handshake.headers.cookie.split(";").forEach((string) => {
