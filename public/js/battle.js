@@ -93,7 +93,9 @@ function getParamUrl(param) {
     return params[param];
 }
 
-class battle {
+
+
+class Battle {
     constructor() {
         this.entities = [];
 
@@ -102,7 +104,30 @@ class battle {
 
         this.entities.push(player)
         this.entities.push(enemy)
+        this.tick = 0;
+
+        this.render(this.tick);
+
+        // console.log(this.entities)
     }
+
+    update (data) {
+        for (let entity in entities) {
+            entity.update(data);
+        }
+    }
+
+    render (tick) {
+        setTimeout(() => {
+            for (let id in this.entities) {
+                this.entities[id].render(tick);
+            }
+
+            this.tick++;
+            this.render(tick);
+        }, 1000 / 60);
+    }
+
 }
 
 class Player {
@@ -111,6 +136,16 @@ class Player {
         this.posX = 0;
         this.posY = 0;
         this.keyListener = new keyListener();
+
+        this.moveVector = [0,0]
+    }
+
+    update (data) {
+        this.posX = data.player.posX;
+    }
+
+    render (tick) {
+
     }
 }
 
@@ -119,7 +154,44 @@ class Enemy {
         this.health = 100;
         this.posX = 0;
         this.posY = 0;
+
+        this.moveVector = [0,0]
     }
+
+    update (data) {
+        this.posX = data.enemy.posX;
+    }
+
+    render (tick) {
+
+    }
+}
+
+
+function sprite (options) {
+                
+    var that = {};
+                    
+    that.context = options.ctx;
+    that.width   = options.width;
+    that.height  = options.height;
+    that.image   = options.image;
+
+    that.render = function () {
+
+        // Draw the animation
+        that.context.drawImage(that.image,
+           0,
+           0,
+           that.width,
+           that.height,
+           0,
+           0,
+           that.width,
+           that.height);
+    };
+
+    return that;
 }
 
 window.onload = function () {
@@ -152,21 +224,46 @@ window.onload = function () {
         console.log(data);
     });
 
-
-    let battle = new Battle();
-
-
-    socket.on('get_data', function (data) {
+    socket.on('getData', function (data) {
         //rerenderCanvas(data);
+        
+        battle.update(data);
+
         console.log(data)
     })
 
-    socket.on('connected_battle', function (data) {
+    socket.on('connectedBattle', function (data) {
         console.log(data);
     })
 
-    socket.emit("send_data", {
+    socket.emit("sendData", {
         posX: 10
     });
+
+
+
+    const ctx = document.getElementById('game__container').getContext('2d');
+    var coinImage = new Image();
+
+    coinImage.src = "/images/coin-sprite-animation.png";
+
+    coinImage.onload = function () {
+        var coin = sprite({
+            ctx: ctx,
+            width: 100,
+            height: 100,
+            image: coinImage
+        });
+
+        coin.render();
+    }
+
+  
+
+
+
+    let battle = new Battle();
+
+    console.log(battle)
 
 };
