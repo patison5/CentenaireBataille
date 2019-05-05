@@ -110,7 +110,12 @@ window.onload = function () {
 
     socket.emit("connectBattle", data);
 
+    let ping = Date.now();
+
     socket.on("message", function (data) {
+        let now = Date.now();
+        console.log("Ping: " + (now - ping));
+        ping = now;
         console.log(data);
     });
     socket.on("endBattle", function (data) {

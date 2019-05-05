@@ -130,7 +130,10 @@ window.onload = function () {
         for (let key in data) {
             temp += key + " : " + data[key];
         }
-        showMessgae(data.message, "createBattle", "Ок", data);
+        showMessgae(data.message, "createBattle", "Подключиться", data);
+        setTimeout(() => {
+            window.location.href = window.location.href + data.url;
+        }, 2000);
     });
 
     socket.on("nicknameChanged", function (data) {
@@ -143,7 +146,6 @@ window.onload = function () {
     });
 
     socket.on("enterBattle", function (data) {
-        console.log(data);
         if (data.ok) {
             document.location.href = window.location.href + "battle/?battle=" + data.message._id;
         } else {

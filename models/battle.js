@@ -46,6 +46,8 @@ exports.createBattle = function (userLogin, name, callback) {
     let answer = {
         ok: false,
         message: "",
+        url: null,
+        battleId: null,
         systemError: ""
     };
     db.get().collection("Battles").find({user1: userLogin, end: false}).count().then((count) => {
@@ -54,9 +56,10 @@ exports.createBattle = function (userLogin, name, callback) {
                 if (!err) {
                     answer.ok = true;
                     answer.message = "Battle created: " + battle.name;
-
+                    answer.battleId = id.insertedId.toString();
                     Users.updateBattle(userLogin, id.insertedId.toString(), (err) => {
                         if (!err) {
+                            answer.url = "battle/?battle=" + id.insertedId.toString();
                             callback(answer);
                         } else {
                             answer.systemError = err;
@@ -136,7 +139,7 @@ exports.endBattle = function (idBattle, callback) {
     };
 
     db.get().collection("Battles").findOneAndUpdate({_id: db.getId(idBattle)}, {$set: {end: true}}, {returnOriginal: false}, function (err, docs) {
-        if (!err) {
+        if (!err && !docs) {
             answer.ok = true;
             answer.message = "Battle \"" + docs.value.name + "\" ended !";
 
