@@ -142,12 +142,18 @@ input {
 
 .message_button .button {
     width: auto;
-    height: 50px;
-    line-height: 50px;
     text-align: center;
-    font-size: 19px;
-    background: #6EC145;
+    font-size: 13px;
+    background: #32800ad1;
     cursor: pointer;
-    padding: 0 20px;
     margin: 0 10px;
+    padding: 10px 15px;
+
+    border: none;
+    color: #fff;
+}
+
+
+.message_button .button:hover {
+    background: #1f5005d1;
 }

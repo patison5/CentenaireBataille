@@ -1,5 +1,5 @@
 // GAME APPLICATION CLASS
-function Battle() {
+function keyListener() {
 
     //KEYS BINDING CODES
     const KEYCODE_ENTER = 13;
@@ -18,13 +18,14 @@ function Battle() {
     const context = canvas.getContext('2d');
 
     // TEMPRORARY OPERATIONS
-    /* document.getElementsByClassName('menu__wraper')[0].style.display = 'none';
-     canvas.style.display = 'block';
-     canvas.style.border = '10px solid #fff';
-     canvas.style.backgroundImage = "url('../images/bg1.gif')";
-     canvas.style.backgroundSize = "cover";
-     canvas.style.backgroundPosition = 'center';
-     canvas.style.backgroundRepeat = "no-repeat";*/
+    // document.getElementsByClassName('menu__wraper')[0].style.display = 'none';
+    canvas.style.display = 'block';
+    canvas.style.border = '10px solid #fff';
+    canvas.style.backgroundColor = "rgb(255, 255, 255, 0.25)"
+    // canvas.style.backgroundImage = "url('../images/bg1.gif')";
+    canvas.style.backgroundSize = "cover";
+    canvas.style.backgroundPosition = 'center';
+    canvas.style.backgroundRepeat = "no-repeat";
 
 
     // GAME MAIN FUNCTIONS
@@ -92,6 +93,35 @@ function getParamUrl(param) {
     return params[param];
 }
 
+class battle {
+    constructor() {
+        this.entities = [];
+
+        let player = new Player();
+        let enemy = new Enemy();
+
+        this.entities.push(player)
+        this.entities.push(enemy)
+    }
+}
+
+class Player {
+    constructor() {
+        this.health = 100;
+        this.posX = 0;
+        this.posY = 0;
+        this.keyListener = new keyListener();
+    }
+}
+
+class Enemy {
+    constructor() {
+        this.health = 100;
+        this.posX = 0;
+        this.posY = 0;
+    }
+}
+
 window.onload = function () {
 
     let url = window.location.href;
@@ -121,6 +151,22 @@ window.onload = function () {
     socket.on("endBattle", function (data) {
         console.log(data);
     });
-    let game = new Battle();
+
+
+    let battle = new Battle();
+
+
+    socket.on('get_data', function (data) {
+        //rerenderCanvas(data);
+        console.log(data)
+    })
+
+    socket.on('connected_battle', function (data) {
+        console.log(data);
+    })
+
+    socket.emit("send_data", {
+        posX: 10
+    });
 
 };
