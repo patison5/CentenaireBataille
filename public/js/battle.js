@@ -1,3 +1,7 @@
+// GAME MAIN ELEMENTS
+var canvas;
+var context;
+
 // GAME APPLICATION CLASS
 function keyListener() {
 
@@ -12,10 +16,6 @@ function keyListener() {
     const KEYCODE_A = 65;
     const KEYCODE_D = 68;
     const KEYCODE_S = 83;
-
-    // GAME MAIN ELEMENTS
-    const canvas = document.getElementById('game__container');
-    const context = canvas.getContext('2d');
 
     // TEMPRORARY OPERATIONS
     // document.getElementsByClassName('menu__wraper')[0].style.display = 'none';
@@ -169,50 +169,90 @@ class Enemy {
 
 
 function sprite (options) {
-                
-    var that = {};
-                    
-    that.context = options.ctx;
-    that.width   = options.width;
-    that.height  = options.height;
-    that.image   = options.image;
+    
+    var that = {},
+        frameIndex = 0,
+        tickCount = 0,
+        ticksPerFrame = options.ticksPerFrame || 0,
+        numberOfFrames = options.numberOfFrames || 1;
+    
+    that.context = options.context;
+    that.width = options.width;
+    that.height = options.height;
+    that.image = options.image;
+    
+    that.update = function () {
 
-    that.render = function () {
+        tickCount += 1;
 
-        // Draw the animation
-        that.context.drawImage(that.image,
-           0,
-           0,
-           that.width,
-           that.height,
-           0,
-           0,
-           that.width,
-           that.height);
+        if (tickCount > ticksPerFrame) {
+
+            tickCount = 0;
+            
+            // If the current frame index is in range
+            if (frameIndex < numberOfFrames - 1) {  
+                // Go to the next frame
+                frameIndex += 1;
+            } else {
+                frameIndex = 0;
+            }
+        }
     };
-
+    
+    that.render = function () {
+    
+      // Clear the canvas
+      that.context.clearRect(0, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
+      
+      // Draw the animation
+      that.context.drawImage(
+        that.image,
+        frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
+        0,                                              // отступ перед вырезом по У
+        that.width / numberOfFrames,                    // ширина выреза
+        that.height,                                    // высота выреза
+        0,                                              // отступ итоговой картинки слева
+        600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
+        that.width / numberOfFrames * 3,                    // ширина итоговой картиинки
+        that.height * 3);                                   // высота итоговой картинки
+    };
+    
     return that;
 }
 
 window.onload = function () {
 
+    //inintializing container
+    canvas = document.getElementById('game__container');
+    context = canvas.getContext('2d');
+
+
+    let battle = new Battle();
+
     let url = window.location.href;
     let arrUrl = url.split("/");
     let socketUrl = arrUrl[0] + "//" + arrUrl[2];
-
-    socket = io.connect(socketUrl);
-    socket.emit("getID");
-    socket.on("getID", function (data) {
-        console.log("ID: " + data);
-    });
 
     let data = {
         battleId: getParamUrl("battle")
     };
 
+    let ping = Date.now();
+
+    socket = io.connect(socketUrl);
+
+    socket.emit("getID");
     socket.emit("connectBattle", data);
 
-    let ping = Date.now();
+
+    socket.emit("sendData", {
+        posX: 10
+    });
+
+
+    socket.on("getID", function (data) {
+        console.log("ID: " + data);
+    });
 
     socket.on("message", function (data) {
         let now = Date.now();
@@ -220,6 +260,7 @@ window.onload = function () {
         ping = now;
         console.log(data);
     });
+
     socket.on("endBattle", function (data) {
         console.log(data);
     });
@@ -236,33 +277,35 @@ window.onload = function () {
         console.log(data);
     })
 
-    socket.emit("sendData", {
-        posX: 10
+    var playerImg = new Image();
+
+    var playerSprite = sprite({
+        context: context,
+        width: 480,
+        height: 80,
+        image: playerImg,
+        numberOfFrames: 6,
+        ticksPerFrame: 6
     });
 
+    // Load sprite sheet
+    playerImg.addEventListener("load", startAnimation);
+    // playerImg.src = "/images/coin-sprite-animation.png";
+    playerImg.src = "/images/charackters/model_1/axe bandit run.png";
 
 
-    const ctx = document.getElementById('game__container').getContext('2d');
-    var coinImage = new Image();
+    function startAnimation () {
+    
+      window.requestAnimationFrame(startAnimation);
 
-    coinImage.src = "/images/coin-sprite-animation.png";
-
-    coinImage.onload = function () {
-        var coin = sprite({
-            ctx: ctx,
-            width: 100,
-            height: 100,
-            image: coinImage
-        });
-
-        coin.render();
+      playerSprite.update();
+      playerSprite.render();
     }
 
-  
+   
 
 
 
-    let battle = new Battle();
 
     console.log(battle)
 
