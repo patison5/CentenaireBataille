@@ -107,8 +107,6 @@ class Battle {
         this.tick = 0;
 
         this.render(this.tick);
-
-        // console.log(this.entities)
     }
 
     update (data) {
@@ -138,6 +136,35 @@ class Player {
         this.keyListener = new keyListener();
 
         this.moveVector = [0,0]
+
+        this.animations = {
+            'default': {
+                'src': "/images/charackters/model_1/Axe Bandit.png",
+                'width': 480,
+                'height': 80,
+                'numberOfFrames': 6,
+                'ticksPerFrame': 4
+            },
+
+            'running': {
+                'src': "/images/charackters/model_1/axe bandit run.png",
+                'width': 640,
+                'height': 80,
+                'numberOfFrames': 8,
+                'ticksPerFrame': 4
+            }
+        }
+
+        this.currentAnimationSprite = sprite({
+            context: context,
+            width:  this.animations['default'].width,
+            height: this.animations['default'].height,
+            image: new Image(),
+            numberOfFrames: this.animations['default'].numberOfFrames,
+            ticksPerFrame:  this.animations['default'].ticksPerFrame
+        });
+
+        console.log(this.currentAnimationSprite)
     }
 
     update (data) {
@@ -281,10 +308,10 @@ window.onload = function () {
 
     var playerSprite = sprite({
         context: context,
-        width: 480,
+        width: 640,
         height: 80,
         image: playerImg,
-        numberOfFrames: 6,
+        numberOfFrames: 8,
         ticksPerFrame: 6
     });
 
@@ -297,16 +324,11 @@ window.onload = function () {
     function startAnimation () {
     
       window.requestAnimationFrame(startAnimation);
-
+      
       playerSprite.update();
       playerSprite.render();
     }
 
-   
 
-
-
-
-    console.log(battle)
 
 };
