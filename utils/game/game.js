@@ -46,6 +46,10 @@ class Game {
                 login: data.login,
                 move: data.move
             });
+        } else {
+            this.sendMessage({
+                message: "Error input data from Battle"
+            });
         }
     }
 
