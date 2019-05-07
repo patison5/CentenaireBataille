@@ -1,6 +1,7 @@
 // GAME MAIN ELEMENTS
 var canvas;
 var context;
+var battle;
 
 // GAME APPLICATION CLASS
 function keyListener() {
@@ -40,7 +41,9 @@ function keyListener() {
                 break;
 
             case KEYCODE_D:
-                socket.emit("sendPos", 'moving toward');
+                // socket.emit("sendPos", 'moving toward');
+                battle.entities[0].posX+=2;
+                // console.log(battle.entities[0])
                 break;
 
             case KEYCODE_S:
@@ -131,7 +134,7 @@ class Battle {
 class Player {
     constructor() {
         this.health = 100;
-        this.posX = 0;
+        this.posX = 10;
         this.posY = 0;
         this.keyListener = new keyListener();
 
@@ -155,7 +158,7 @@ class Player {
             }
         }
 
-        this.currentAnimationSprite = sprite({
+        this.currentAnimationSprite = this.sprite({
             context: context,
             width:  this.animations['default'].width,
             height: this.animations['default'].height,
@@ -163,8 +166,69 @@ class Player {
             numberOfFrames: this.animations['default'].numberOfFrames,
             ticksPerFrame:  this.animations['default'].ticksPerFrame
         });
+    }
 
-        console.log(this.currentAnimationSprite)
+    sprite (options) {
+        
+        var that = {},
+            frameIndex = 0,
+            tickCount = 0,
+            ticksPerFrame = options.ticksPerFrame || 0,
+            numberOfFrames = options.numberOfFrames || 1;
+        
+        that.context = options.context;
+        that.width = options.width;
+        that.height = options.height;
+        that.image = options.image;
+        that.posX = this.posX;
+        
+
+        that.update = function () {
+
+            tickCount += 1;
+
+            if (tickCount > ticksPerFrame) {
+
+                tickCount = 0;
+                
+                // If the current frame index is in range
+                if (frameIndex < numberOfFrames - 1) {  
+                    // Go to the next frame
+                    frameIndex += 1;
+                } else {
+                    frameIndex = 0;
+                }
+            }
+        };
+        
+        that.render = function () {
+
+          // Clear the canvas
+          that.context.clearRect(that.posX, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
+          
+          // Draw the animation
+          that.context.drawImage(
+            that.image,
+            frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
+            0,                                              // отступ перед вырезом по У
+            that.width / numberOfFrames,                    // ширина выреза
+            that.height,                                    // высота выреза
+            that.posX,                                      // отступ итоговой картинки слева
+            600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
+            that.width / numberOfFrames * 3,                // ширина итоговой картиинки
+            that.height * 3);                               // высота итоговой картинки
+        };
+        
+        return that;
+    }
+
+    startAnimation () {
+        // Load sprite sheet
+        let playerImg = new Image();
+        this.currentAnimationSprite.image.src = this.animations['default'].src;
+        
+        this.currentAnimationSprite.update()
+        this.currentAnimationSprite.render()
     }
 
     update (data) {
@@ -172,7 +236,9 @@ class Player {
     }
 
     render (tick) {
+        // console.log('tick')
 
+        this.startAnimation();
     }
 }
 
@@ -190,7 +256,6 @@ class Enemy {
     }
 
     render (tick) {
-
     }
 }
 
@@ -253,8 +318,8 @@ window.onload = function () {
     canvas = document.getElementById('game__container');
     context = canvas.getContext('2d');
 
-
-    let battle = new Battle();
+    // запускаем батл
+    battle = new Battle();
 
     let url = window.location.href;
     let arrUrl = url.split("/");
@@ -315,8 +380,9 @@ window.onload = function () {
         ticksPerFrame: 6
     });
 
+    console.log("1:", playerSprite)
     // Load sprite sheet
-    playerImg.addEventListener("load", startAnimation);
+    // playerImg.addEventListener("load", startAnimation);
     // playerImg.src = "/images/coin-sprite-animation.png";
     playerImg.src = "/images/charackters/model_1/axe bandit run.png";
 
