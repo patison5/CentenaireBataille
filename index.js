@@ -4,6 +4,8 @@ const app = require('./utils/server/server');
 
 const socket = require("./utils/socket/socket");
 
+const BattleManager = require("./utils/battleManager/battleManager");
+
 //const uri = "mongodb://root:qwerty78@centenairebatailledb-shard-00-00-bnck4.mongodb.net:27017,centenairebatailledb-shard-00-01-bnck4.mongodb.net:27017,centenairebatailledb-shard-00-02-bnck4.mongodb.net:27017/test?ssl=true&replicaSet=CentenaireBatailleDB-shard-0&authSource=admin&retryWrites=true";
 //const uri = "mongodb+srv://root:qwerty78@battle-ypufz.mongodb.net/test?retryWrites=true";
 const uri = "mongodb://localhost:27017/";
@@ -35,7 +37,10 @@ const server = app.listen(port, () => {
      */
     db.connect(uri, (err) => {
         if (!err) {
-            console.log("Database connected!")
+            console.log("Database connected!");
+            BattleManager.init((data) => {
+                console.log(data);
+            });
         } else {
             return console.log(err);
         }

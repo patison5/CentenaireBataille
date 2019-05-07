@@ -1,5 +1,22 @@
 const db = require('../utils/db/db');
 const Users = require('./users');
+exports.getBattlesBattleManager = function (callback) {
+    let answer = {
+        ok: false,
+        message: null
+    };
+
+    db.get().collection("Battles").find({end: false}).toArray((err, battles) => {
+        if (!err) {
+            answer.ok = true;
+            answer.message = battles;
+        } else {
+            answer.message = "Error: " + err;
+        }
+        callback(answer);
+    });
+};
+
 exports.getBattles = function (callback) {
     let answer = {
         ok: false,
@@ -139,7 +156,8 @@ exports.endBattle = function (idBattle, callback) {
     };
 
     db.get().collection("Battles").findOneAndUpdate({_id: db.getId(idBattle)}, {$set: {end: true}}, {returnOriginal: false}, function (err, docs) {
-        if (!err && !docs) {
+        if (!err && docs.value !== null) {
+            console.log(docs);
             answer.ok = true;
             answer.message = "Battle \"" + docs.value.name + "\" ended !";
 

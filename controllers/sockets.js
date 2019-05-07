@@ -70,12 +70,10 @@ function enterBattle(data, io, socket) {
 
 function connectBattle(data, io, socket) {
     let cookie = Utils.getCookie(socket);
+
     if (BattleManager.getBattle(data.battleId) !== undefined) {
-        BattleManager.getBattle(data.battleId).setSocket(socket);
+        BattleManager.getBattle(data.battleId).setSocket(socket, cookie.get("login"));
     }
-    socket.join(data.battleId, () => {
-        socket.to(data.battleId).emit('message', {login: cookie.get("login")});
-    });
 }
 
 function endBattle(data, io, socket) {
@@ -85,8 +83,9 @@ function endBattle(data, io, socket) {
             room = r;
         }
     }
-    Battles.endBattle(room, (data) => {
-        io.sockets.to(room).emit('endBattle', data);
+
+    Battles.endBattle(room, (mess) => {
+        io.sockets.to(room).emit('endBattle', mess);
     });
 }
 

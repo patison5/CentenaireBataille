@@ -213,6 +213,8 @@
     grid-template-columns: 33% 30px auto;
     /*background: #579736;*/
     margin: 10px 0 10px 0;
+    border: 1px dashed #ccc;
+    padding: 5px;
 }
 
 .menu__right-top .container .prop_player div {
@@ -235,7 +237,7 @@
 .menu__right-top .container div p {
     text-align: center;
     line-height: 30px;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .menu__right-center {

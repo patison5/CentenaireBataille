@@ -16,6 +16,7 @@ module.exports = {
 
     init(callback) {
         state.socket = require('socket.io')(state.server);
+
         /**
          * Связываемся по сокету с подключившемся клиентом
          *@param (connection)

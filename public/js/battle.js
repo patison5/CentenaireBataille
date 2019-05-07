@@ -21,30 +21,41 @@ function keyListener() {
     // document.getElementsByClassName('menu__wraper')[0].style.display = 'none';
     canvas.style.display = 'block';
     canvas.style.border = '10px solid #fff';
-    canvas.style.backgroundColor = "rgb(255, 255, 255, 0.25)"
+    canvas.style.backgroundColor = "rgb(255, 255, 255, 0.25)";
     // canvas.style.backgroundImage = "url('../images/bg1.gif')";
     canvas.style.backgroundSize = "cover";
     canvas.style.backgroundPosition = 'center';
     canvas.style.backgroundRepeat = "no-repeat";
 
+    /**
+     * pos (x,y);
+     */
 
     // GAME MAIN FUNCTIONS
     this.handleKeyDown = function (e) {
         switch (e.keyCode) {
             case KEYCODE_W:
-                socket.emit("sendPos", 'moving jump');
+                socket.emit("sendData", {
+                    move: [0, 1]
+                });
                 break;
 
             case KEYCODE_A:
-                socket.emit("endBattle", 'moving back');
+                socket.emit("endBattle", {
+                    move: [-1, 0]
+                });
                 break;
 
             case KEYCODE_D:
-                socket.emit("sendPos", 'moving toward');
+                socket.emit("sendData", {
+                    move: [1, 0]
+                });
                 break;
 
             case KEYCODE_S:
-                socket.emit("sendPos", "sit down");
+                socket.emit("sendData", {
+                    move: [0, -1]
+                });
                 break;
         }
     };
@@ -52,19 +63,27 @@ function keyListener() {
     this.handleKeyUp = function (e) {
         switch (e.keyCode) {
             case KEYCODE_W:
-                socket.emit("sendPos", 'stop moving');
+                socket.emit("sendData", {
+                    move: [0, 0]
+                });
                 break;
 
             case KEYCODE_A:
-                socket.emit("sendPos", "stop moving");
+                socket.emit("sendData", {
+                    move: [0, 0]
+                });
                 break;
 
             case KEYCODE_D:
-                socket.emit("sendPos", 'stop moving');
+                socket.emit("sendData", {
+                    move: [0, 0]
+                });
                 break;
 
             case KEYCODE_S:
-                socket.emit("sendPos", "stop moving");
+                socket.emit("sendData", {
+                    move: [0, 0]
+                });
                 break;
         }
     };
@@ -102,16 +121,16 @@ class Battle {
         let player = new Player();
         let enemy = new Enemy();
 
-        this.entities.push(player)
-        this.entities.push(enemy)
+        this.entities.push(player);
+        this.entities.push(enemy);
         this.tick = 0;
 
         this.render(this.tick);
     }
 
     update (data) {
-        for (let entity in entities) {
-            entity.update(data);
+        for (let id in this.entities) {
+            this.entities[id].update(data);
         }
     }
 
@@ -123,19 +142,20 @@ class Battle {
 
             this.tick++;
             this.render(tick);
-        }, 1000 / 60);
+        }, 1000);
     }
 
 }
 
 class Player {
     constructor() {
+        this.type = "Player";
         this.health = 100;
         this.posX = 0;
         this.posY = 0;
         this.keyListener = new keyListener();
 
-        this.moveVector = [0,0]
+        this.moveVector = [0, 0];
 
         this.animations = {
             'default': {
@@ -153,31 +173,45 @@ class Player {
                 'numberOfFrames': 8,
                 'ticksPerFrame': 4
             }
-        }
+        };
+        this.image = new Image();
 
-        this.currentAnimationSprite = sprite({
-            context: context,
-            width:  this.animations['default'].width,
-            height: this.animations['default'].height,
-            image: new Image(),
-            numberOfFrames: this.animations['default'].numberOfFrames,
-            ticksPerFrame:  this.animations['default'].ticksPerFrame
+        this.currentAnimationSprite;
+
+        this.image.addEventListener("load", () => {
+            this.currentAnimationSprite = sprite({
+                context: context,
+                width: this.animations['default'].width,
+                height: this.animations['default'].height,
+                image: new Image(),
+                numberOfFrames: this.animations['default'].numberOfFrames,
+                ticksPerFrame: this.animations['default'].ticksPerFrame,
+                posX: this.posX,
+                posY: this.posY
+            });
         });
+        this.image.src = "/images/charackters/model_1/axe bandit run.png";
 
         console.log(this.currentAnimationSprite)
     }
 
     update (data) {
-        this.posX = data.player.posX;
+        if (data.move !== null) {
+            this.posX += data.move[0];
+            this.posY += data.move[1];
+        }
     }
 
     render (tick) {
-
+        this.currentAnimationSprite.render();
+        this.currentAnimationSprite.update()
     }
 }
 
 class Enemy {
     constructor() {
+        this.type = "Emeny";
+
         this.health = 100;
         this.posX = 0;
         this.posY = 0;
@@ -186,7 +220,7 @@ class Enemy {
     }
 
     update (data) {
-        this.posX = data.enemy.posX;
+        // this.posX = data.enemy.posX;
     }
 
     render (tick) {
@@ -227,10 +261,9 @@ function sprite (options) {
     };
     
     that.render = function () {
-    
       // Clear the canvas
       that.context.clearRect(0, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
-      
+
       // Draw the animation
       that.context.drawImage(
         that.image,
@@ -238,10 +271,10 @@ function sprite (options) {
         0,                                              // отступ перед вырезом по У
         that.width / numberOfFrames,                    // ширина выреза
         that.height,                                    // высота выреза
-        0,                                              // отступ итоговой картинки слева
-        600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
-        that.width / numberOfFrames * 3,                    // ширина итоговой картиинки
-        that.height * 3);                                   // высота итоговой картинки
+          -100 + options.posX,                                              // отступ итоговой картинки слева
+          600 - that.height * 3 + 60 + options.posY,                     // отступ итоговой картинки сверху
+          that.width / numberOfFrames * 3,                // ширина итоговой картиинки
+          that.height * 3);                               // высота итоговой картинки
     };
     
     return that;
@@ -253,8 +286,8 @@ window.onload = function () {
     canvas = document.getElementById('game__container');
     context = canvas.getContext('2d');
 
-
     let battle = new Battle();
+
 
     let url = window.location.href;
     let arrUrl = url.split("/");
@@ -264,47 +297,32 @@ window.onload = function () {
         battleId: getParamUrl("battle")
     };
 
-    let ping = Date.now();
-
     socket = io.connect(socketUrl);
 
     socket.emit("getID");
-    socket.emit("connectBattle", data);
-
-
-    socket.emit("sendData", {
-        posX: 10
-    });
-
-
     socket.on("getID", function (data) {
         console.log("ID: " + data);
     });
 
-    socket.on("message", function (data) {
-        let now = Date.now();
-        console.log("Ping: " + (now - ping));
-        ping = now;
+    socket.emit("connectBattle", data);
+    socket.on('connectedBattle', function (data) {
         console.log(data);
+    });
+
+    socket.on('getData', function (data) {
+        //rerenderCanvas(data);
+
+        battle.update(data);
+
+        console.log(data)
     });
 
     socket.on("endBattle", function (data) {
         console.log(data);
     });
 
-    socket.on('getData', function (data) {
-        //rerenderCanvas(data);
-        
-        battle.update(data);
 
-        console.log(data)
-    })
-
-    socket.on('connectedBattle', function (data) {
-        console.log(data);
-    })
-
-    var playerImg = new Image();
+    /* var playerImg = new Image();
 
     var playerSprite = sprite({
         context: context,
@@ -316,19 +334,19 @@ window.onload = function () {
     });
 
     // Load sprite sheet
-    playerImg.addEventListener("load", startAnimation);
+  //  playerImg.addEventListener("load", startAnimation);
     // playerImg.src = "/images/coin-sprite-animation.png";
-    playerImg.src = "/images/charackters/model_1/axe bandit run.png";
+   // playerImg.src = "/images/charackters/model_1/axe bandit run.png";
 
 
     function startAnimation () {
     
-      window.requestAnimationFrame(startAnimation);
+      //window.requestAnimationFrame(startAnimation);
       
-      playerSprite.update();
-      playerSprite.render();
+      //playerSprite.update();
+     // playerSprite.render();
     }
-
+*/
 
 
 };
