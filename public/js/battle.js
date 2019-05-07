@@ -37,17 +37,36 @@ function keyListener() {
                 break;
 
             case KEYCODE_A:
-                socket.emit("endBattle", 'moving back');
+                console.log('moving left...')
+                battle.entities[0].posX-=5;
+
+                battle.entities[0].setAnimationTo('running');
+
+                socket.emit("sendData", {
+                    move: [0,-1]
+                });
+
                 break;
 
             case KEYCODE_D:
-                // socket.emit("sendPos", 'moving toward');
-                battle.entities[0].posX+=2;
-                // console.log(battle.entities[0])
+                console.log('moving right...')
+                battle.entities[0].posX+=5;
+
+                
+
+                if (battle.entities[0].currentAnimationTitle != "running") 
+                    battle.entities[0].setAnimationTo('running');
+
+                socket.emit("sendData", {
+                    move: [0,1]
+                });
+
                 break;
 
             case KEYCODE_S:
-                socket.emit("sendPos", "sit down");
+                console.log("trying to end the battle....")
+
+                socket.emit("endBattle", 'moving back');
                 break;
         }
     };
@@ -60,6 +79,7 @@ function keyListener() {
 
             case KEYCODE_A:
                 socket.emit("sendPos", "stop moving");
+                battle.entities[0].setAnimationTo('default');
                 break;
 
             case KEYCODE_D:
@@ -113,8 +133,8 @@ class Battle {
     }
 
     update (data) {
-        for (let entity in entities) {
-            entity.update(data);
+        for (let id in this.entities) {
+            this.entities[id].update(data);
         }
     }
 
@@ -136,7 +156,9 @@ class Player {
         this.health = 100;
         this.posX = 10;
         this.posY = 0;
-        this.keyListener = new keyListener();
+        this.currentAnimationSprite = null;
+        this.currentAnimationTitle = "default";
+
 
         this.moveVector = [0,0]
 
@@ -158,13 +180,20 @@ class Player {
             }
         }
 
+        this.setAnimationTo("default");
+    }
+
+    setAnimationTo(animationName) {
+        console.log(animationName);
+
         this.currentAnimationSprite = this.sprite({
             context: context,
-            width:  this.animations['default'].width,
-            height: this.animations['default'].height,
+            width:  this.animations[animationName].width,
+            height: this.animations[animationName].height,
+            imageSrc: this.animations[animationName].src,
             image: new Image(),
-            numberOfFrames: this.animations['default'].numberOfFrames,
-            ticksPerFrame:  this.animations['default'].ticksPerFrame
+            numberOfFrames: this.animations[animationName].numberOfFrames,
+            ticksPerFrame:  this.animations[animationName].ticksPerFrame
         });
     }
 
@@ -179,9 +208,8 @@ class Player {
         that.context = options.context;
         that.width = options.width;
         that.height = options.height;
-        that.image = options.image;
-        that.posX = this.posX;
-        
+        that.image = options.image;  
+        that.imageSrc = options.imageSrc;    
 
         that.update = function () {
 
@@ -201,22 +229,22 @@ class Player {
             }
         };
         
-        that.render = function () {
+        that.render = function (entity) {
 
-          // Clear the canvas
-          that.context.clearRect(that.posX, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
-          
-          // Draw the animation
-          that.context.drawImage(
-            that.image,
-            frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
-            0,                                              // отступ перед вырезом по У
-            that.width / numberOfFrames,                    // ширина выреза
-            that.height,                                    // высота выреза
-            that.posX,                                      // отступ итоговой картинки слева
-            600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
-            that.width / numberOfFrames * 3,                // ширина итоговой картиинки
-            that.height * 3);                               // высота итоговой картинки
+            // Clear the canvas
+            that.context.clearRect(entity.posX, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
+
+            // Draw the animation
+            that.context.drawImage(
+                that.image,
+                frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
+                0,                                              // отступ перед вырезом по У
+                that.width / numberOfFrames,                    // ширина выреза
+                that.height,                                    // высота выреза
+                entity.posX,                                      // отступ итоговой картинки слева
+                600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
+                that.width / numberOfFrames * 3,                // ширина итоговой картиинки
+                that.height * 3);                               // высота итоговой картинки
         };
         
         return that;
@@ -225,14 +253,15 @@ class Player {
     startAnimation () {
         // Load sprite sheet
         let playerImg = new Image();
-        this.currentAnimationSprite.image.src = this.animations['default'].src;
-        
+        this.currentAnimationSprite.image.src = this.currentAnimationSprite.imageSrc;
+
         this.currentAnimationSprite.update()
-        this.currentAnimationSprite.render()
+        this.currentAnimationSprite.render(this)
     }
 
     update (data) {
-        this.posX = data.player.posX;
+        console.log("fucking updated data:", data)
+        // this.posX = data.player.posX + ;
     }
 
     render (tick) {
@@ -252,7 +281,8 @@ class Enemy {
     }
 
     update (data) {
-        this.posX = data.enemy.posX;
+        console.log("fucking updated data:", data)
+        // this.posX = data.enemy.posX;
     }
 
     render (tick) {
@@ -305,8 +335,8 @@ function sprite (options) {
         that.height,                                    // высота выреза
         0,                                              // отступ итоговой картинки слева
         600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
-        that.width / numberOfFrames * 3,                    // ширина итоговой картиинки
-        that.height * 3);                                   // высота итоговой картинки
+        that.width / numberOfFrames * 3,                // ширина итоговой картиинки
+        that.height * 3);                               // высота итоговой картинки
     };
     
     return that;
@@ -336,12 +366,6 @@ window.onload = function () {
     socket.emit("getID");
     socket.emit("connectBattle", data);
 
-
-    socket.emit("sendData", {
-        posX: 10
-    });
-
-
     socket.on("getID", function (data) {
         console.log("ID: " + data);
     });
@@ -359,42 +383,20 @@ window.onload = function () {
 
     socket.on('getData', function (data) {
         //rerenderCanvas(data);
-        
-        battle.update(data);
+        console.log("i get some fucking data!", data)
 
-        console.log(data)
+        if (!data.message)
+            battle.update(data);
+        else 
+            console.log(data.message)
+       
     })
 
     socket.on('connectedBattle', function (data) {
+        console.log("Socket on connectedBattle emmited!")
         console.log(data);
     })
 
-    var playerImg = new Image();
-
-    var playerSprite = sprite({
-        context: context,
-        width: 640,
-        height: 80,
-        image: playerImg,
-        numberOfFrames: 8,
-        ticksPerFrame: 6
-    });
-
-    console.log("1:", playerSprite)
-    // Load sprite sheet
-    // playerImg.addEventListener("load", startAnimation);
-    // playerImg.src = "/images/coin-sprite-animation.png";
-    playerImg.src = "/images/charackters/model_1/axe bandit run.png";
-
-
-    function startAnimation () {
-    
-      window.requestAnimationFrame(startAnimation);
-      
-      playerSprite.update();
-      playerSprite.render();
-    }
-
-
+    keyListener()
 
 };

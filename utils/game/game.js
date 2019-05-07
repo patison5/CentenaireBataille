@@ -41,6 +41,8 @@ class Game {
     }
 
     getMessage(data) {
+        console.log(data);
+        
         if (data.move !== undefined) {
             this.sendMessage({
                 login: data.login,
