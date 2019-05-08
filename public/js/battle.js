@@ -56,9 +56,7 @@ window.onload = function () {
                 context.lineTo(CANVAS_WIDTH, CANVAS_HEIGHT-40);
                 context.stroke();
 
-                for (let id in this.entities) {
-                    this.entities[id].render(tick);
-                }
+                
 
                 //tmp setup
                 let player = this.entities[0];
@@ -73,6 +71,7 @@ window.onload = function () {
                 }
                 if (controller.right) {
                     player.velocity_x += 0.5;
+
                 }
 
                 player.velocity_y += 1.5;// gravity
@@ -88,6 +87,38 @@ window.onload = function () {
                     player.velocity_y = 0;
                 }
 
+                // if (player.velocity_x )
+                
+
+                if (controller.left)
+                    console.log(player.velocity_x)
+
+                if (controller.right && (player.velocity_x > 0.1)){
+                    if (player.currentAnimationTitle != "running"){
+                        player.currentAnimationTitle = "running";
+                        player.setAnimationTo('running');
+                    }
+
+                } else if (controller.left && (player.velocity_x > -1)) {
+                    if (player.currentAnimationTitle != "running"){
+                        player.currentAnimationTitle = "running";
+                        player.setAnimationTo('running');
+
+                        console.log('moving left.....')
+                    }
+                } else if (!controller.right && !controller.left) {
+                   if (player.currentAnimationTitle != "default"){
+                        player.currentAnimationTitle = "default";
+                        player.setAnimationTo('default');
+                    }
+
+                    
+                }
+
+
+                for (let id in this.entities) {
+                    this.entities[id].render(tick);
+                }
 
                 // console.log(player.posY)
 
@@ -141,6 +172,9 @@ window.onload = function () {
         }
 
         setAnimationTo(animationName) {
+
+            console.log("setting animation to... ");
+
             var img = new Image();
             img.src = this.animations[animationName].src;
 
@@ -246,14 +280,23 @@ window.onload = function () {
 
                 case controller.KEYCODE_A:
                     controller.left = key_state;
-                    console.log('moving left')
                 break;
+
                 case controller.KEYCODE_SPACE:
-                    console.log('jumping')
                     controller.up = key_state;
                 break;
+
                 case controller.KEYCODE_D:
-                    console.log('moving right')
+
+                    // if (battle.entities[0].currentAnimationTitle != "running") {
+                    //     console.log("CHANGING ANIMBATION TO RUNNING")
+                    //     console.log(battle.entities[0])
+                    //     battle.entities[0].setAnimationTo('running');
+                    //     console.log(battle.entities[0])
+                    // }
+
+                    // console.log(battle.entities[0].currentAnimationTitle)
+
                     controller.right = key_state;
                 break;
 
