@@ -84,10 +84,25 @@ class Battle {
                 charachter.velocity_y *= 0.9;// friction
 
                 // if charachter is falling below floor line
+                // эти ебанутые числа нужно убрать после применения translate к canvas...
                 if (charachter.posY > this.world.HEIGHT - 173 - 40) {
                     charachter.jumping = false;
                     charachter.posY = this.world.HEIGHT - 173 - 40;
                     charachter.velocity_y = 0;
+                }
+
+                // if charachter is falling below floor line
+                if (charachter.posX >= this.world.WIDTH -200) {
+                    charachter.posX = this.world.WIDTH - 200;
+                    charachter.velocity_x = 0;
+                }
+
+                // if charachter is falling below floor line
+                if (charachter.posX <= -80) {
+                    charachter.posX = -80;
+                    charachter.velocity_x = 0;
+
+                    console.log(charachter.posX)
                 }
 
 
