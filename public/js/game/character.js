@@ -48,9 +48,6 @@ class Character {
     }
 
     setAnimationTo(animationName) {
-
-        console.log("setting animation to... ");
-
         var img = new Image();
         img.src = this.animations[animationName].src;
 

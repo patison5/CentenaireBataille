@@ -210,6 +210,9 @@ window.onload = function () {
 
     // запускаем батл
     battle = new Battle();
+
+    startFrontSocket(battle);
+
     battle.startBattle();
 
 

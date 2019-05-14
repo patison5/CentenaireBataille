@@ -1,4 +1,12 @@
-const Utils = require("../utils");
+// const Utils = require("../utils");
+
+class Player {
+    constructor (posX = 10, posY = 0) {
+        this.health = 100;
+        this.posX = 10;
+        this.posY = 0;
+    }
+}
 
 class Game {
     constructor(idGame) {
@@ -32,7 +40,8 @@ class Game {
         socket.login = login;
         this.io.to(this.idGame).emit("connectedBattle", {
             ok: true,
-            message: login + " connected !"
+            message: login + " connected !",
+            userName: login
         });
         socket.on("sendData", (data) => {
             data.login = socket.login;
@@ -41,7 +50,7 @@ class Game {
     }
 
     getMessage(data) {
-        console.log(data);
+        console.log("Get some interesting data...: ", data);
         
         if (data.move !== undefined) {
             this.sendMessage({

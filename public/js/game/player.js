@@ -35,8 +35,11 @@ class Player extends Character {
     }
 
     update (data) {
-        console.log("fucking updated data:", data)
-        // this.posX = data.player.posX + ;
+        console.log("Player is updating:", data)
+
+        this.posX       = data.player_posX;
+        this.direction  = data.player_direction_x;
+        this.velocity   = data.player_velocity_x;
     }
 
     render (tick) {
