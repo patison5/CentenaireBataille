@@ -12,32 +12,55 @@ class Character {
         this.direction_x = 1;
 
 
-        this.moveVector = [0,0]
+        this.moveVector = [0,0];
 
+        this.animations = {
+            'default': {
+                'src': "/images/charackters/model_1/right-stay.png",
+                'width': 480,
+                'height': 80,
+                'numberOfFrames': 6,
+                'ticksPerFrame': 4
+            },
 
-        //временный компромис... нет времени думать как обходить это ебучее ООП
-        if (type == 'player') {
-            this.animations = {
-                'default': {
-                    'src': "/images/charackters/model_1/Axe Bandit.png",
-                    'width': 480,
-                    'height': 80,
-                    'numberOfFrames': 6,
-                    'ticksPerFrame': 4
-                }
-            }
-        } else {
-            this.animations = {
-                'default': {
-                    'src': "/images/charackters/model_1/enemy_stay.png",
-                    'width': 480,
-                    'height': 80,
-                    'numberOfFrames': 6,
-                    'ticksPerFrame': 4
-                }
+            'running': {
+                'src': "/images/charackters/model_1/right-run.png",
+                'width': 640,
+                'height': 80,
+                'numberOfFrames': 8,
+                'ticksPerFrame': 4
+            },
+            'attacking': {
+                'src': "/images/charackters/model_1/right-attack.png",
+                'width': 640,
+                'height': 80,
+                'numberOfFrames': 8,
+                'ticksPerFrame': 4
+            },
+
+            'default_reverse': {
+                'src': "/images/charackters/model_1/left-stay.png",
+                'width': 480,
+                'height': 80,
+                'numberOfFrames': 6,
+                'ticksPerFrame': 4
+            },
+
+            'running_reverse': {
+                'src': "/images/charackters/model_1/left-run.png",
+                'width': 640,
+                'height': 80,
+                'numberOfFrames': 8,
+                'ticksPerFrame': 4
+            },
+            'attacking_reverse': {
+                'src': "/images/charackters/model_1/left-attack.png",
+                'width': 640,
+                'height': 80,
+                'numberOfFrames': 8,
+                'ticksPerFrame': 4
             }
         }
-        
 
         this.setAnimationTo("default");
     }

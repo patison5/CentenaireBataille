@@ -29,16 +29,13 @@ class Battle {
     } 
 
     update (data) {
-        // for (let id in this.entities) {
-        //     this.entities[id].update(data);
-        // }
 
         if (data.login == this.userName) {
-            console.log("updating player")
+            // console.log("updating player")
         } else {
-            console.log("updating enemy");
+            // console.log("updating enemy");
             this.enemy.update(data.move)
-            console.log(data.move)
+            // console.log(data.move)
         }
     }
 
@@ -66,6 +63,17 @@ class Battle {
             if (controller.up && player.jumping == false) {
                 player.velocity_y -= 20;
                 player.jumping = true;
+
+                socket.emit("sendData", {
+                    move: {
+                        player_direction_x: player.direction_x,
+                        player_velocity_x: player.velocity_x,
+                        player_velocity_y: player.velocity_y,
+                        player_posX: player.posX, 
+                        player_posY: player.posY,
+                        user_name: this.userName
+                    }
+                });
             }
 
             if (controller.left) {
@@ -76,7 +84,9 @@ class Battle {
                     move: {
                         player_direction_x: player.direction_x,
                         player_velocity_x: player.velocity_x,
+                        player_velocity_y: player.velocity_y,
                         player_posX: player.posX, 
+                        player_posY: player.posY,
                         user_name: this.userName
                     }
                 });
@@ -90,7 +100,9 @@ class Battle {
                     move: {
                         player_direction_x: player.direction_x,
                         player_velocity_x: player.velocity_x,
+                        player_velocity_y: player.velocity_y,
                         player_posX: player.posX, 
+                        player_posY: player.posY,
                         user_name: this.userName
                     }
                 });
@@ -105,11 +117,12 @@ class Battle {
             for (let id in this.entities) {
                 let charachter = this.entities[id];
 
-                charachter.velocity_y += 1.5;// gravity
+                charachter.velocity_y += this.world.gravity;// gravity
                 charachter.posX += charachter.velocity_x;
                 charachter.posY += charachter.velocity_y;
-                charachter.velocity_x *= 0.9;// friction
-                charachter.velocity_y *= 0.9;// friction
+
+                charachter.velocity_x *= this.world.friction;// friction
+                charachter.velocity_y *= this.world.friction;// friction
 
                 // if charachter is falling below floor line
                 // эти ебанутые числа нужно убрать после применения translate к canvas...
@@ -123,9 +136,7 @@ class Battle {
                 if (charachter.posX >= this.world.WIDTH -200) {
                     charachter.posX = this.world.WIDTH - 200;
                     charachter.velocity_x = 0;
-
-                    //temporary for enemy player...
-                    // this.entities[1].direction_x = -1;
+                    console.log('коснулся правой стены!')
                 }
 
                 // if charachter is falling below floor line
@@ -133,30 +144,32 @@ class Battle {
                     charachter.posX = -80;
                     charachter.velocity_x = 0;
 
-                    console.log(charachter.posX)
-
-                    //temporary for enemy player...
-                    // this.entities[1].direction_x = 1;
+                    console.log('коснулся левой стены!')
                 }
 
-
-
                 if (charachter.direction_x < 0) {
+                    console.log(this.entities[1].velocity_x)
+                    
                     if (charachter.velocity_x < -0.4) {
-                        if (charachter.currentAnimationTitle != "running"){
-                            // console.log('moving left')
-                            charachter.currentAnimationTitle = "running";
-                            charachter.setAnimationTo('running');
+
+                        if (charachter.currentAnimationTitle != "running_reverse"){
+                            console.log('moving left')
+                            charachter.currentAnimationTitle = "running_reverse";
+                            charachter.setAnimationTo('running_reverse');
+
+                            console.log(charachter.currentAnimationTitle)
                         }
                     } else {
-                        if (charachter.currentAnimationTitle != "default"){
+                        if (charachter.currentAnimationTitle != "default_reverse"){
                             // console.log('staying animation...')
-                            charachter.currentAnimationTitle = "default";
-                            charachter.setAnimationTo('default');
+                            charachter.currentAnimationTitle = "default_reverse";
+                            charachter.setAnimationTo('default_reverse');
                         }
                     }
                 } else if (charachter.direction_x > 0) {
                     if (charachter.velocity_x > 0.4) {
+                        // console.log(this.entities[1].velocity_x)
+
                         if (charachter.currentAnimationTitle != "running"){
                             // console.log('moving left')
                             charachter.currentAnimationTitle = "running";
