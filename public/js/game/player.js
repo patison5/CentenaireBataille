@@ -17,6 +17,9 @@ class Player extends Character {
         this.direction_x    = data.player_direction_x;
         this.velocity_x     = data.player_velocity_x;
         this.velocity_y     = data.player_velocity_y;
+        this.attacking      = data.attacking;
+
+        console.log('player atacking: ', this.attacking)
     }
 
     render (tick) {

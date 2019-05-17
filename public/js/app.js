@@ -21,10 +21,12 @@ window.onload = function () {
         KEYCODE_A:     65,
         KEYCODE_D:     68,
         KEYCODE_S:     83,
+        KEYCODE_ENTER: 13,
 
         left:   false,
         right:  false,
         up:     false,
+        attack: false,
 
         keyListener:function(event) {
 
@@ -40,19 +42,18 @@ window.onload = function () {
                     controller.up = key_state;
                 break;
 
+                case controller.KEYCODE_ENTER:
+                    controller.attack = key_state;
+                break;
+
                 case controller.KEYCODE_D:
-
-                    // if (battle.entities[0].currentAnimationTitle != "running") {
-                    //     console.log("CHANGING ANIMBATION TO RUNNING")
-                    //     console.log(battle.entities[0])
-                    //     battle.entities[0].setAnimationTo('running');
-                    //     console.log(battle.entities[0])
-                    // }
-
-                    // console.log(battle.entities[0].currentAnimationTitle)
-
                     controller.right = key_state;
                 break;
+
+
+
+
+                
 
             }
 

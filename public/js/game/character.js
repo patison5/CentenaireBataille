@@ -6,10 +6,12 @@ class Character {
         this.velocity_x = 0;
         this.velocity_y = 0;
         this.jumping = true;
+        this.attacking = false;
         this.currentAnimationSprite = null;
         this.currentAnimationTitle = "default";
         this.context = context;
         this.direction_x = 1;
+        this.tmpSpriteImg = new Image();
 
 
         this.moveVector = [0,0];
@@ -71,17 +73,16 @@ class Character {
     }
 
     setAnimationTo(animationName) {
-        var img = new Image();
-        img.src = this.animations[animationName].src;
+        this.tmpSpriteImg.src = this.animations[animationName].src;
 
         this.currentAnimationSprite = this.sprite({
-            context: this.context,
-            width:  this.animations[animationName].width,
-            height: this.animations[animationName].height,
-            imageSrc: this.animations[animationName].src,
-            image: img,
+            context:        this.context,
+            width:          this.animations[animationName].width,
+            height:         this.animations[animationName].height,
+            imageSrc:       this.animations[animationName].src,
             numberOfFrames: this.animations[animationName].numberOfFrames,
-            ticksPerFrame:  this.animations[animationName].ticksPerFrame
+            ticksPerFrame:  this.animations[animationName].ticksPerFrame,
+            image:          this.tmpSpriteImg
         });
     }
 
@@ -90,7 +91,7 @@ class Character {
         var that = {},
             frameIndex = 0,
             tickCount = 0,
-            ticksPerFrame = options.ticksPerFrame || 0,
+            ticksPerFrame  = options.ticksPerFrame  || 0,
             numberOfFrames = options.numberOfFrames || 1;
         
         that.context = options.context;

@@ -1,6 +1,6 @@
 // GAME APPLICATION CLASS
 class Battle {
-    constructor() {
+    constructor(player = {}, enemy = {}) {
         this.userName = null;
 
         this.entities = [];
@@ -71,7 +71,8 @@ class Battle {
                         player_velocity_y: player.velocity_y,
                         player_posX: player.posX, 
                         player_posY: player.posY,
-                        user_name: this.userName
+                        user_name: this.userName,
+                        attacking: controller.attack
                     }
                 });
             }
@@ -80,6 +81,8 @@ class Battle {
                 player.direction_x = -1;
                 player.velocity_x -= 0.5;
 
+                console.log(controller.attack)
+
                 socket.emit("sendData", {
                     move: {
                         player_direction_x: player.direction_x,
@@ -87,7 +90,8 @@ class Battle {
                         player_velocity_y: player.velocity_y,
                         player_posX: player.posX, 
                         player_posY: player.posY,
-                        user_name: this.userName
+                        user_name: this.userName,
+                        attacking: controller.attack
                     }
                 });
             }
@@ -103,7 +107,22 @@ class Battle {
                         player_velocity_y: player.velocity_y,
                         player_posX: player.posX, 
                         player_posY: player.posY,
-                        user_name: this.userName
+                        user_name: this.userName,
+                        attacking: controller.attack
+                    }
+                });
+            }
+
+            if (controller.attack) {
+                socket.emit("sendData", {
+                    move: {
+                        player_direction_x: player.direction_x,
+                        player_velocity_x: player.velocity_x,
+                        player_velocity_y: player.velocity_y,
+                        player_posX: player.posX, 
+                        player_posY: player.posY,
+                        user_name: this.userName,
+                        attacking: controller.attack
                     }
                 });
             }
@@ -143,21 +162,15 @@ class Battle {
                 if (charachter.posX <= -80) {
                     charachter.posX = -80;
                     charachter.velocity_x = 0;
-
                     console.log('коснулся левой стены!')
                 }
 
                 if (charachter.direction_x < 0) {
-                    console.log(this.entities[1].velocity_x)
-                    
                     if (charachter.velocity_x < -0.4) {
-
                         if (charachter.currentAnimationTitle != "running_reverse"){
-                            console.log('moving left')
+                            // console.log('moving left')
                             charachter.currentAnimationTitle = "running_reverse";
                             charachter.setAnimationTo('running_reverse');
-
-                            console.log(charachter.currentAnimationTitle)
                         }
                     } else {
                         if (charachter.currentAnimationTitle != "default_reverse"){
@@ -183,7 +196,17 @@ class Battle {
                         }
                     }
                 }
+
+                // console.log('attacking bool ', charachter.attacking)
+
+                // if (charachter.attacking) {
+                //     charachter.currentAnimationTitle = "attacking";
+                //     charachter.setAnimationTo('attacking');
+
+                //     // console.log('setting animation to attacking')
+                // }
             }
+
                        
 
 
