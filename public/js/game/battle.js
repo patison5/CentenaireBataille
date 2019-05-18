@@ -19,6 +19,11 @@ class Battle {
         console.log(document.getElementById('game__container').width)
     }
 
+    playAudio(audioName){
+        var audio = new Audio(`../../../sounds/${audioName}.mp3`);
+        audio.play();
+    }
+
     startGameTimer () {
         setTimeout(() => {
             this.currentTime--;
@@ -280,6 +285,8 @@ class Battle {
                     charachter.currentAnimationTitle = "attacking";
                     charachter.currentAnimationOnce  = true;
                     charachter.setAnimationTo('attacking', true);
+
+                    this.playAudio("PUNCH");
                 }
             }
 
