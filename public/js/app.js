@@ -208,7 +208,16 @@ window.onload = function () {
 
     startFrontSocket(battle);
 
-    battle.startBattle();
+
+
+    // как только будет реализован функционал подгрузки обоих клиентов - убрать эту хуйню нахуй!
+    setTimeout(() => {
+         console.log("battle id number of client : ", battle.idNumber)
+
+        battle.startBattle();
+    }, 1000)
+
+   
 
 
     // jобработка клавишных событий

@@ -1,30 +1,40 @@
 // GAME APPLICATION CLASS
 class Battle {
     constructor(player = {}, enemy = {}) {
-        this.userName = null;
-
-        this.entities = [];
+        this.context = document.getElementById('game__container').getContext('2d');
 
         this.world = new Battle.World();
 
-        this.context = document.getElementById('game__container').getContext('2d');
+        this.userName = null;
+        this.idNumber = null;
 
-        this.player = new Player("player", this.context);
-        this.enemy  = new Enemy ("Enemy",  this.context, 300, 0);
-
-        this.entities.push(this.player)
-        this.entities.push(this.enemy)
-
-
-        console.log(this.enemy)
-        console.log(this.player)
-
+        this.entities = [];
 
         this.tick = 0;
     }
 
     startBattle () {
         // начинаем отрисовку игры
+        console.log('starting that fucking game')
+
+        console.log(this.idNumber)
+
+        if (this.idNumber % 2 == 0) {
+            this.player = new Player("player", this.context, 10, 600);
+            this.enemy  = new Enemy ("Enemy",  this.context, 300, 600);
+
+            console.log('you are the number ', this.idNumber)
+        } else {
+            console.log('you are the number ', this.idNumber)
+
+            this.player = new Player("player", this.context, 300, 600);
+            this.enemy  = new Enemy ("Enemy",  this.context, 10, 600);
+        }
+
+        this.entities.push(this.player)
+        this.entities.push(this.enemy)
+
+
         this.render(this.tick);
     } 
 

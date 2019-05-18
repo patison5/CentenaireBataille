@@ -18,6 +18,7 @@ class Game {
         this.ticks = 0;
         this.run();
         this.clock();
+        this.numberCLient = 0;  //отправляет номер подключенного клиента - нужно для инициализации позиций игроков
     }
 
     clock() {
@@ -38,10 +39,13 @@ class Game {
         this.sockets.set(login, socket);
         socket.join(this.idGame);
         socket.login = login;
+        this.numberCLient++;
+
         this.io.to(this.idGame).emit("connectedBattle", {
             ok: true,
             message: login + " connected !",
-            userName: login
+            userName: login,
+            numberCLient: this.numberCLient
         });
         socket.on("sendData", (data) => {
             data.login = socket.login;
@@ -50,7 +54,7 @@ class Game {
     }
 
     getMessage(data) {
-        console.log("Get some interesting data...: ", data);
+        console.log("data form client...: ", data);
         
         if (data.move !== undefined) {
             this.sendMessage({
@@ -63,6 +67,14 @@ class Game {
             });
         }
     }
+
+
+    // я хочу чтоб ты тут кое-что изменил, чтобы работало!
+    disconnect() {
+        this.numberCLient--;
+        console.log('removing one client')
+    }
+    // я хочу чтоб ты тут кое-что изменил, чтобы работало!
 
     sendMessage(message) {
         this.io.to(this.idGame).emit('getData', message);

@@ -64,6 +64,9 @@ function startFrontSocket (battle) {
         if (data.ok) {
             if (!battle.userName)
                 battle.userName = data.userName;
+            
+            if (!battle.idNumber)
+                battle.idNumber = data.numberCLient;
         }
 
     })
