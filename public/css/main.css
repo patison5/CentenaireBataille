@@ -157,3 +157,17 @@ input {
 .message_button .button:hover {
     background: #1f5005d1;
 }
+
+
+
+
+.game__container {
+    position: relative;
+}
+.game__data-container {
+    position: absolute;
+    color: #000;
+    font-size: 20px;
+    top: 0;
+    left: 0;
+}

@@ -5,19 +5,45 @@ class Battle {
 
         this.world = new Battle.World();
 
+        this.world.WIDTH  = document.getElementById('game__container').width;
+        this.world.HEIGHT = document.getElementById('game__container').height;
+
         this.userName = null;
-        this.idNumber = null;
+        this.idNumber = null; // нужен для удостоверения личности игрока - номер зашедшего игрока
 
         this.entities = [];
 
         this.tick = 0;
+
+        console.log(document.getElementById('game__container').width)
+    }
+
+    drawPlayersInfo () {
+        this.context.font = "25px Arial";
+        this.context.color = "#fff";
+        this.context.strokeStyle = "rgb(154, 59, 59)";
+        this.context.lineWidth = 20;
+        this.context.fillStyle = "#ffffff";
+
+        this.context.fillText("Player", 20, 30);
+        this.context.beginPath();
+        this.context.moveTo(20, 60);
+        this.context.lineTo(this.player.health*3, 60);
+        this.context.stroke();
+
+
+        this.context.fillText("Enemy", this.world.WIDTH - 100, 30);
+        this.context.beginPath();
+        this.context.moveTo(this.world.WIDTH - this.enemy.health*3, 60);
+        this.context.lineTo(this.world.WIDTH - 20, 60);
+        this.context.stroke();
+
+        
     }
 
     startBattle () {
         // начинаем отрисовку игры
         console.log('starting that fucking game')
-
-        console.log(this.idNumber)
 
         if (this.idNumber % 2 == 0) {
             this.player = new Player("player", this.context, 10, 600);
@@ -34,6 +60,7 @@ class Battle {
         this.entities.push(this.player)
         this.entities.push(this.enemy)
 
+        this.enemy.health = 60;
 
         this.render(this.tick);
     } 
@@ -55,7 +82,6 @@ class Battle {
             // CLEARGIN CANVVAS
             this.context.clearRect(0, 0, this.world.WIDTH, this.world.HEIGHT)
 
-
             // DRAWING MAIN LINE
             this.context.strokeStyle = "#202830";
             this.context.lineWidth = 4;
@@ -63,6 +89,8 @@ class Battle {
             this.context.moveTo(0, this.world.HEIGHT-40);
             this.context.lineTo(this.world.WIDTH, this.world.HEIGHT-40);
             this.context.stroke();
+
+            this.drawPlayersInfo();
 
             
 
@@ -129,6 +157,8 @@ class Battle {
                     player.direction_x = 1;
                     player.velocity_x += 0.5;
 
+                    console.log("player.posX: ", player.posX)
+
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
@@ -175,7 +205,7 @@ class Battle {
                 }
 
                 // if charachter is falling below floor line
-                if (charachter.posX >= this.world.WIDTH -200) {
+                if (charachter.posX >= this.world.WIDTH) {
                     charachter.posX = this.world.WIDTH - 200;
                     charachter.velocity_x = 0;
                     console.log('коснулся правой стены!')
