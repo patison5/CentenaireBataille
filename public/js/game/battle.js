@@ -14,8 +14,20 @@ class Battle {
         this.entities = [];
 
         this.tick = 0;
+        this.currentTime = 90;
 
         console.log(document.getElementById('game__container').width)
+    }
+
+    startGameTimer () {
+        setTimeout(() => {
+            this.currentTime--;
+
+            if (this.currentTime == 0)
+                alert("game finished!");
+            else 
+                this.startGameTimer();
+        }, 1000)
     }
 
     drawPlayersInfo () {
@@ -36,10 +48,17 @@ class Battle {
         this.context.beginPath();
         this.context.moveTo(this.world.WIDTH - this.enemy.health*3, 60);
         this.context.lineTo(this.world.WIDTH - 20, 60);
-        this.context.stroke();
-
-        
+        this.context.stroke();  
     }
+
+
+    drawGameTimer () {
+        this.context.font = "40px Arial";
+        this.context.color = "#fff";
+        this.context.fillStyle = "#ffffff";
+        this.context.fillText(this.currentTime, this.world.WIDTH / 2, 60);
+    }
+
 
     startBattle () {
         // начинаем отрисовку игры
@@ -63,6 +82,8 @@ class Battle {
         this.enemy.health = 60;
 
         this.render(this.tick);
+
+        this.startGameTimer() //стартуем таймер игры
     } 
 
     update (data) {
@@ -91,6 +112,7 @@ class Battle {
             this.context.stroke();
 
             this.drawPlayersInfo();
+            this.drawGameTimer();
 
             
 
