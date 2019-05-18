@@ -4,6 +4,7 @@ class Battle {
         this.context = document.getElementById('game__container').getContext('2d');
 
         this.world = new Battle.World();
+        this.sound = new Sound();
 
         this.world.WIDTH  = document.getElementById('game__container').width;
         this.world.HEIGHT = document.getElementById('game__container').height;
@@ -15,13 +16,6 @@ class Battle {
 
         this.tick = 0;
         this.currentTime = 90;
-
-        console.log(document.getElementById('game__container').width)
-    }
-
-    playAudio(audioName){
-        var audio = new Audio(`../../../sounds/${audioName}.mp3`);
-        audio.play();
     }
 
     startGameTimer () {
@@ -84,11 +78,13 @@ class Battle {
         this.entities.push(this.player)
         this.entities.push(this.enemy)
 
-        this.enemy.health = 60;
+        this.enemy.health = 80;
 
         this.render(this.tick);
 
         this.startGameTimer() //стартуем таймер игры
+        this.sound.playSoundInLoop('default')
+        // this.sound.stopPlayingSound();
     } 
 
     update (data) {
@@ -129,35 +125,13 @@ class Battle {
                 this.player.attacking = true;
                 this.player.changeAtackingBoolTimer();
 
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x:  player.velocity_x,
-                        player_velocity_y:  player.velocity_y,
-                        player_posX:        player.posX, 
-                        player_posY:        player.posY,
-                        user_name:          this.userName,
-                        currentAnimOnce:    player.currentAnimationOnce,
-                        attacking:          true
-                    }
-                });
+                this.sendPlayerData();
             } else {
                 if (controller.up && player.jumping == false) {
                     player.velocity_y -= 20;
                     player.jumping = true;
 
-                    socket.emit("sendData", {
-                        move: {
-                            player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
-                        }
-                    });
+                    this.sendPlayerData();
                 }
 
                 if (controller.left) {
@@ -166,18 +140,7 @@ class Battle {
 
                     console.log(controller.attack)
 
-                    socket.emit("sendData", {
-                        move: {
-                            player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
-                        }
-                    });
+                    this.sendPlayerData();
                 }
 
                 if (controller.right) {
@@ -186,18 +149,7 @@ class Battle {
 
                     console.log("player.posX: ", player.posX)
 
-                    socket.emit("sendData", {
-                        move: {
-                            player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
-                        }
-                    });
+                    this.sendPlayerData();
                 }
 
             }
@@ -286,7 +238,7 @@ class Battle {
                     charachter.currentAnimationOnce  = true;
                     charachter.setAnimationTo('attacking', true);
 
-                    this.playAudio("PUNCH");
+                    this.sound.playSound('punch')
                 }
             }
 
@@ -295,6 +247,21 @@ class Battle {
 
             for (let id in this.entities) {
                 this.entities[id].render(tick);
+            }
+
+            this.sendPlayerData = function () {
+                socket.emit("sendData", {
+                    move: {
+                        player_direction_x: player.direction_x,
+                        player_velocity_x:  player.velocity_x,
+                        player_velocity_y:  player.velocity_y,
+                        player_posX:        player.posX, 
+                        player_posY:        player.posY,
+                        user_name:          this.userName,
+                        currentAnimOnce:    player.currentAnimationOnce,
+                        attacking:          true
+                    }
+                });
             }
 
             this.tick++;
