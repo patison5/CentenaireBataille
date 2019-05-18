@@ -10,7 +10,7 @@ class Battle {
         this.context = document.getElementById('game__container').getContext('2d');
 
         this.player = new Player("player", this.context);
-        this.enemy = new Enemy("Enemy", this.context, 300, 0);
+        this.enemy  = new Enemy ("Enemy",  this.context, 300, 0);
 
         this.entities.push(this.player)
         this.entities.push(this.enemy)
@@ -60,77 +60,90 @@ class Battle {
             let player = this.entities[0];
             // let enemy  = this.entities[1];
 
-            if (controller.up && player.jumping == false) {
-                player.velocity_y -= 20;
-                player.jumping = true;
+            if (controller.attack && player.attacking == false) {
+                this.player.attacking = true;
+                this.player.changeAtackingBoolTimer();
 
                 socket.emit("sendData", {
                     move: {
                         player_direction_x: player.direction_x,
-                        player_velocity_x: player.velocity_x,
-                        player_velocity_y: player.velocity_y,
-                        player_posX: player.posX, 
-                        player_posY: player.posY,
-                        user_name: this.userName,
-                        attacking: controller.attack
+                        player_velocity_x:  player.velocity_x,
+                        player_velocity_y:  player.velocity_y,
+                        player_posX:        player.posX, 
+                        player_posY:        player.posY,
+                        user_name:          this.userName,
+                        currentAnimOnce:    player.currentAnimationOnce,
+                        attacking:          true
                     }
                 });
-            }
+            } else {
+                if (controller.up && player.jumping == false) {
+                    player.velocity_y -= 20;
+                    player.jumping = true;
 
-            if (controller.left) {
-                player.direction_x = -1;
-                player.velocity_x -= 0.5;
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
+                }
 
-                console.log(controller.attack)
+                if (controller.left) {
+                    player.direction_x = -1;
+                    player.velocity_x -= 0.5;
 
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x: player.velocity_x,
-                        player_velocity_y: player.velocity_y,
-                        player_posX: player.posX, 
-                        player_posY: player.posY,
-                        user_name: this.userName,
-                        attacking: controller.attack
-                    }
-                });
-            }
+                    console.log(controller.attack)
 
-            if (controller.right) {
-                player.direction_x = 1;
-                player.velocity_x += 0.5;
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
+                }
 
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x: player.velocity_x,
-                        player_velocity_y: player.velocity_y,
-                        player_posX: player.posX, 
-                        player_posY: player.posY,
-                        user_name: this.userName,
-                        attacking: controller.attack
-                    }
-                });
-            }
+                if (controller.right) {
+                    player.direction_x = 1;
+                    player.velocity_x += 0.5;
 
-            if (controller.attack) {
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x: player.velocity_x,
-                        player_velocity_y: player.velocity_y,
-                        player_posX: player.posX, 
-                        player_posY: player.posY,
-                        user_name: this.userName,
-                        attacking: controller.attack
-                    }
-                });
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
+                }
+
             }
 
             
-            //тестовая строчка для противника
-            // this.entities[1].velocity_x = this.entities[1].velocity_x + this.entities[1].direction_x * 0.3;
 
+
+            // if (this.player.attacking)
+            //     console.log(this.player.attacking)
+
+            // if (this.enemy.attacking)
+            //     console.log(this.enemy.attacking)
+            
 
             // обработка обоих игроков - добавление физики и анимаций
             for (let id in this.entities) {
@@ -165,46 +178,47 @@ class Battle {
                     console.log('коснулся левой стены!')
                 }
 
-                if (charachter.direction_x < 0) {
-                    if (charachter.velocity_x < -0.4) {
-                        if (charachter.currentAnimationTitle != "running_reverse"){
-                            // console.log('moving left')
-                            charachter.currentAnimationTitle = "running_reverse";
-                            charachter.setAnimationTo('running_reverse');
-                        }
-                    } else {
-                        if (charachter.currentAnimationTitle != "default_reverse"){
-                            // console.log('staying animation...')
-                            charachter.currentAnimationTitle = "default_reverse";
-                            charachter.setAnimationTo('default_reverse');
-                        }
-                    }
-                } else if (charachter.direction_x > 0) {
-                    if (charachter.velocity_x > 0.4) {
-                        // console.log(this.entities[1].velocity_x)
 
-                        if (charachter.currentAnimationTitle != "running"){
-                            // console.log('moving left')
-                            charachter.currentAnimationTitle = "running";
-                            charachter.setAnimationTo('running');
+                if (!charachter.attacking) {
+                    if (charachter.direction_x < 0) {
+                        if (charachter.velocity_x < -0.4) {
+                            if (charachter.currentAnimationTitle != "running_reverse"){
+                                // console.log('moving left')
+                                charachter.currentAnimationTitle = "running_reverse";
+                                charachter.setAnimationTo('running_reverse');
+                            }
+                        } else {
+                            if (charachter.currentAnimationTitle != "default_reverse"){
+                                // console.log('staying animation...')
+                                charachter.currentAnimationTitle = "default_reverse";
+                                charachter.setAnimationTo('default_reverse');
+                            }
                         }
-                    } else {
-                        if (charachter.currentAnimationTitle != "default"){
-                            // console.log('staying animation...')
-                            charachter.currentAnimationTitle = "default";
-                            charachter.setAnimationTo('default');
+                    } else if (charachter.direction_x > 0) {
+                        if (charachter.velocity_x > 0.4) {
+                            if (charachter.currentAnimationTitle != "running"){
+                                // console.log('moving left')
+                                charachter.currentAnimationTitle = "running";
+                                charachter.setAnimationTo('running');
+                            }
+                        } else {
+                            if (charachter.currentAnimationTitle != "default"){
+                                // console.log('staying animation...')
+                                charachter.currentAnimationTitle = "default";
+                                charachter.setAnimationTo('default');
+                            }
                         }
                     }
                 }
 
-                // console.log('attacking bool ', charachter.attacking)
 
-                // if (charachter.attacking) {
-                //     charachter.currentAnimationTitle = "attacking";
-                //     charachter.setAnimationTo('attacking');
 
-                //     // console.log('setting animation to attacking')
-                // }
+                //setting animation onle once...
+                if (charachter.attacking && !charachter.currentAnimationOnce) {
+                    charachter.currentAnimationTitle = "attacking";
+                    charachter.currentAnimationOnce  = true;
+                    charachter.setAnimationTo('attacking', true);
+                }
             }
 
                        

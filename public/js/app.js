@@ -49,12 +49,6 @@ window.onload = function () {
                 case controller.KEYCODE_D:
                     controller.right = key_state;
                 break;
-
-
-
-
-                
-
             }
 
         }

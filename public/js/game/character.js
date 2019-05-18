@@ -9,12 +9,10 @@ class Character {
         this.attacking = false;
         this.currentAnimationSprite = null;
         this.currentAnimationTitle = "default";
+        this.currentAnimationOnce = false;
         this.context = context;
         this.direction_x = 1;
         this.tmpSpriteImg = new Image();
-
-
-        this.moveVector = [0,0];
 
         this.animations = {
             'default': {
@@ -67,13 +65,23 @@ class Character {
         this.setAnimationTo("default");
     }
 
+    changeAtackingBoolTimer () {
+        setTimeout(() => {
+            console.log('changin attacking value back to false;')
+            this.attacking = false;
+            this.currentAnimationOnce = false;
+        }, 1000)
+    }
+
     setPosition(x, y) {
         this.posX = x;
         this.posY = y;
     }
 
-    setAnimationTo(animationName) {
+    setAnimationTo(animationName, once = false) {
         this.tmpSpriteImg.src = this.animations[animationName].src;
+
+        console.log('setting animations to', animationName, once)
 
         this.currentAnimationSprite = this.sprite({
             context:        this.context,
@@ -82,7 +90,8 @@ class Character {
             imageSrc:       this.animations[animationName].src,
             numberOfFrames: this.animations[animationName].numberOfFrames,
             ticksPerFrame:  this.animations[animationName].ticksPerFrame,
-            image:          this.tmpSpriteImg
+            image:          this.tmpSpriteImg,
+            once:           once
         });
     }
 
@@ -94,33 +103,43 @@ class Character {
             ticksPerFrame  = options.ticksPerFrame  || 0,
             numberOfFrames = options.numberOfFrames || 1;
         
-        that.context = options.context;
-        that.width = options.width;
-        that.height = options.height;
-        that.image = options.image;  
-        that.imageSrc = options.imageSrc;    
+        that.context    = options.context;
+        that.width      = options.width;
+        that.height     = options.height;
+        that.image      = options.image;  
+        that.imageSrc   = options.imageSrc; 
+        that.once       = options.once;
+
+        that.stopAnimation = false;  
+
+        console.log('playing for once? :',  that.once)
+        console.log("stopAnimation",        that.stopAnimation)
 
         that.update = function () {
 
-            tickCount += 1;
+            if (!that.stopAnimation) {
+                tickCount += 1;
 
-            if (tickCount > ticksPerFrame) {
+                if (tickCount > ticksPerFrame) {
+                    tickCount = 0;
+                    
+                    // If the current frame index is in range
+                    if (frameIndex < numberOfFrames - 2) {  
+                        // Go to the next frame
+                        frameIndex += 1;
+                    } else {
+                        if(that.once){
+                            that.stopAnimation = true;
+                            console.log('stoping animation for once effect')
+                        }
 
-                tickCount = 0;
-                
-                // If the current frame index is in range
-                if (frameIndex < numberOfFrames - 1) {  
-                    // Go to the next frame
-                    frameIndex += 1;
-                } else {
-                    frameIndex = 0;
+                        frameIndex = 0;
+                    }
                 }
             }
         };
         
         that.render = function (entity) {
-
-            // Clear the canvas
             //that.context.clearRect(entity.posX, entity.posY, that.width * 3, that.height * 3);
 
             // Draw the animation
