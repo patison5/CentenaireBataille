@@ -22,11 +22,13 @@ window.onload = function () {
         KEYCODE_D:     68,
         KEYCODE_S:     83,
         KEYCODE_ENTER: 13,
+        KEYCODE_ARROW_DOWN: 40,
 
         left:   false,
         right:  false,
         up:     false,
         attack: false,
+        reaction: false,
 
         keyListener:function(event) {
 
@@ -48,6 +50,10 @@ window.onload = function () {
 
                 case controller.KEYCODE_D:
                     controller.right = key_state;
+
+                case controller.KEYCODE_ARROW_DOWN:
+                    controller.reaction = key_state;
+
                 break;
             }
 

@@ -14,63 +14,8 @@ class Character {
         this.direction_x = 1;
         this.tmpSpriteImg = new Image();
 
-        this.animations = {
-            'default': {
-                'src': "/images/charackters/model_1/right-stay.png",
-                'width': 480,
-                'height': 80,
-                'numberOfFrames': 6,
-                'ticksPerFrame': 4
-            },
-
-            // 'default': {
-            //     'src': "/images/pers 2/reaction.png",
-            //     'width': 279,
-            //     'height': 109,
-            //     'numberOfFrames': 5,
-            //     'ticksPerFrame': 4
-            // },
-
-            'running': {
-                'src': "/images/charackters/model_1/right-run.png",
-                'width': 640,
-                'height': 80,
-                'numberOfFrames': 8,
-                'ticksPerFrame': 4
-            },
-            'attacking': {
-                'src': "/images/charackters/model_1/right-attack.png",
-                'width': 640,
-                'height': 80,
-                'numberOfFrames': 8,
-                'ticksPerFrame': 4
-            },
-
-            'default_reverse': {
-                'src': "/images/charackters/model_1/left-stay.png",
-                'width': 480,
-                'height': 80,
-                'numberOfFrames': 6,
-                'ticksPerFrame': 4
-            },
-
-            'running_reverse': {
-                'src': "/images/charackters/model_1/left-run.png",
-                'width': 640,
-                'height': 80,
-                'numberOfFrames': 8,
-                'ticksPerFrame': 4
-            },
-            'attacking_reverse': {
-                'src': "/images/charackters/model_1/left-attack.png",
-                'width': 640,
-                'height': 80,
-                'numberOfFrames': 8,
-                'ticksPerFrame': 4
-            }
-        }
-
-        this.setAnimationTo("default");
+        this.sizeScaleX = 3;
+        this.sizeScaleY = 3;
     }
 
     changeAtackingBoolTimer () {
@@ -158,9 +103,9 @@ class Character {
                 that.width / numberOfFrames,                    // ширина выреза
                 that.height,                                    // высота выреза
                 entity.posX,                                    // отступ итоговой картинки слева
-                entity.posY,                                    // отступ итоговой картинки сверху
-                that.width / numberOfFrames * 3,                // ширина итоговой картиинки
-                that.height * 3);                               // высота итоговой картинки
+                entity.posY - that.height * 2.4,                      // отступ итоговой картинки сверху .. сделал ось игрик в ногах
+                that.width / numberOfFrames * 2.4,                    // ширина итоговой картиинки
+                that.height * 2.4);                                   // высота итоговой картинки
         };
         
         return that;

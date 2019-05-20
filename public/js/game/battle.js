@@ -50,6 +50,19 @@ class Battle {
         this.context.stroke();  
     }
 
+    collideObjects () {
+        let playerWidth = 40*3;
+
+        console.log(this.player.posX)
+        if (Math.abs(this.player.posX - this.enemy.posX) <= playerWidth) {
+            console.log("ENEMY PUCHNED ONCE!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return true
+        } else {
+            console.log("U ARE MIIIIISSSEEEED!D")
+        }
+
+        console.log(Math.abs(this.player.posX - this.enemy.posX))
+    }
 
     drawGameTimer () {
         this.context.font = "40px Arial";
@@ -64,26 +77,33 @@ class Battle {
         console.log('starting that fucking game')
 
         if (this.idNumber % 2 == 0) {
-            this.player = new Player("player", this.context, 10, 600);
-            this.enemy  = new Enemy ("Enemy",  this.context, 300, 600);
+            this.player = new Player("player", this.context, 10, 800);
+            this.enemy  = new Enemy ("Enemy",  this.context, 300, 800);
+            
+            this.sound.playSoundInLoop('default')
 
             console.log('you are the number ', this.idNumber)
         } else {
             console.log('you are the number ', this.idNumber)
 
-            this.player = new Player("player", this.context, 300, 600);
-            this.enemy  = new Enemy ("Enemy",  this.context, 10, 600);
+            this.player = new Player("player", this.context, 300, 800);
+            this.enemy  = new Enemy ("Enemy",  this.context, 10, 800);
+
+
+
+            this.enemy.setAnimationTo("default");
+            this.player.setAnimationTo("default");
         }
 
         this.entities.push(this.player)
         this.entities.push(this.enemy)
 
-        this.enemy.health = 60;
+        this.enemy.player = 60;
 
         this.render(this.tick);
 
         this.startGameTimer() //стартуем таймер игры
-        this.sound.playSoundInLoop('default')
+        // this.sound.playSoundInLoop('default')
         // this.sound.stopPlayingSound();
     } 
 
@@ -125,18 +145,38 @@ class Battle {
                 this.player.attacking = true;
                 this.player.changeAtackingBoolTimer();
 
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x:  player.velocity_x,
-                        player_velocity_y:  player.velocity_y,
-                        player_posX:        player.posX, 
-                        player_posY:        player.posY,
-                        user_name:          this.userName,
-                        currentAnimOnce:    player.currentAnimationOnce,
-                        attacking:          true
-                    }
-                });
+                if (this.collideObjects()) {
+                    console.log("ENEMY IS BEEN ATTACKED!##################")
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          true,
+                            enemyIsBeingAttacked: true
+                        }
+                    });
+
+                    this.enemy.health-=10;
+                } else {
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          true
+                        }
+                    });
+                }
+
             } else {
                 if (controller.up && player.jumping == false) {
                     player.velocity_y -= 20;
@@ -196,6 +236,10 @@ class Battle {
                     });
                 }
 
+                if (controller.reaction) {
+                    // this.player.setAnimationTo('reaction', true)
+                }
+
             }
 
             
@@ -221,9 +265,9 @@ class Battle {
 
                 // if charachter is falling below floor line
                 // эти ебанутые числа нужно убрать после применения translate к canvas...
-                if (charachter.posY > this.world.HEIGHT - 173 - 40) {
+                if (charachter.posY > this.world.HEIGHT - 40) {
                     charachter.jumping = false;
-                    charachter.posY = this.world.HEIGHT - 173 - 40;
+                    charachter.posY = this.world.HEIGHT - 40;
                     charachter.velocity_y = 0;
                 }
 
