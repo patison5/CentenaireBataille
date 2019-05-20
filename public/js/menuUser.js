@@ -153,6 +153,7 @@ window.onload = function () {
         }
     });
     socket.on("reConnect", (data) => {
+        console.log(data);
         document.location.href = window.location.href + "battle/?battle=" + data.message[0]._id;
     });
 };

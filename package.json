@@ -11,10 +11,12 @@
   "nodemonConfig": {
     "verbose": true,
     "ignore": [
-      "node_modules/*"
+      "node_modules/*",
+      "public/images/*"
     ],
     "watch": [
-      "public/*",
+      "public/css/*",
+      "public/js/*",
       "views/*",
       "routes/*",
       "models/*",

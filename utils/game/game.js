@@ -6,30 +6,11 @@ class Game {
         this.idGame = idGame;
         this.io = Socket.getState().socket;
         this.sockets = new Map();
-        this.time = 0;
-        this.ticks = 0;
-        this.run();
-        this.clock();
-    }
-
-    clock() {
-        setTimeout(() => {
-            this.time++;
-            this.clock();
-        }, 1000);
-    }
-
-    run() {
-        setTimeout(() => {
-            this.ticks++;
-            this.run();
-        }, 1000 / 60);
     }
 
     setSocket(socket, login) {
         this.sockets.set(login, socket);
         socket.join(this.idGame);
-        socket.login = login;
         this.io.to(this.idGame).emit("connectedBattle", {
             ok: true,
             message: login + " connected !"
@@ -41,18 +22,10 @@ class Game {
     }
 
     getMessage(data) {
-        console.log(data);
-        
-        if (data.move !== undefined) {
-            this.sendMessage({
+        this.sendMessage({
                 login: data.login,
                 move: data.move
-            });
-        } else {
-            this.sendMessage({
-                message: "Error input data from Battle"
-            });
-        }
+        });
     }
 
     sendMessage(message) {

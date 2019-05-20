@@ -56,7 +56,6 @@ let closeMessage = function (elem, data) {
         $(".message_wrap_jq").last().fadeOut(1000);
     }
     if (event === "createBattle") {
-        window.location.href = window.location.href + data.url;
         $(".message_wrap_jq").last().fadeOut(1000);
     }
     if (event === "error") {

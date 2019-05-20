@@ -22,24 +22,26 @@ const server = app.listen(port, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 
     /**
-     * Иницилизируем класс работы со сокетами
-     * @param(server) - сервер Express
-     */
-
-    socket.set(server);
-    socket.init((data) => {
-        console.log(data);
-    });
-
-    /**
      * Подключение к базе данных
      * @param {url} - ссылка на базу данных
      */
     db.connect(uri, (err) => {
         if (!err) {
             console.log("Database connected!");
-            BattleManager.init((data) => {
-                console.log(data);
+            /**
+             * Иницилизируем класс работы со сражениями
+             */
+            BattleManager.init((message) => {
+                console.log(message);
+
+                /**
+                 * Иницилизируем класс работы со сокетами
+                 * @param(server) - сервер Express
+                 */
+                socket.set(server);
+                socket.init((message) => {
+                    console.log(message);
+                });
             });
         } else {
             return console.log(err);
