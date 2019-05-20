@@ -23,6 +23,14 @@ class Character {
                 'ticksPerFrame': 4
             },
 
+            // 'default': {
+            //     'src': "/images/pers 2/reaction.png",
+            //     'width': 279,
+            //     'height': 109,
+            //     'numberOfFrames': 5,
+            //     'ticksPerFrame': 4
+            // },
+
             'running': {
                 'src': "/images/charackters/model_1/right-run.png",
                 'width': 640,

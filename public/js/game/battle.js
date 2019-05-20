@@ -78,7 +78,7 @@ class Battle {
         this.entities.push(this.player)
         this.entities.push(this.enemy)
 
-        this.enemy.health = 80;
+        this.enemy.health = 60;
 
         this.render(this.tick);
 
@@ -125,13 +125,35 @@ class Battle {
                 this.player.attacking = true;
                 this.player.changeAtackingBoolTimer();
 
-                this.sendPlayerData();
+                socket.emit("sendData", {
+                    move: {
+                        player_direction_x: player.direction_x,
+                        player_velocity_x:  player.velocity_x,
+                        player_velocity_y:  player.velocity_y,
+                        player_posX:        player.posX, 
+                        player_posY:        player.posY,
+                        user_name:          this.userName,
+                        currentAnimOnce:    player.currentAnimationOnce,
+                        attacking:          true
+                    }
+                });
             } else {
                 if (controller.up && player.jumping == false) {
                     player.velocity_y -= 20;
                     player.jumping = true;
 
-                    this.sendPlayerData();
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
                 }
 
                 if (controller.left) {
@@ -140,7 +162,18 @@ class Battle {
 
                     console.log(controller.attack)
 
-                    this.sendPlayerData();
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
                 }
 
                 if (controller.right) {
@@ -149,7 +182,18 @@ class Battle {
 
                     console.log("player.posX: ", player.posX)
 
-                    this.sendPlayerData();
+                    socket.emit("sendData", {
+                        move: {
+                            player_direction_x: player.direction_x,
+                            player_velocity_x:  player.velocity_x,
+                            player_velocity_y:  player.velocity_y,
+                            player_posX:        player.posX, 
+                            player_posY:        player.posY,
+                            user_name:          this.userName,
+                            currentAnimOnce:    player.currentAnimationOnce,
+                            attacking:          controller.attack
+                        }
+                    });
                 }
 
             }
@@ -247,21 +291,6 @@ class Battle {
 
             for (let id in this.entities) {
                 this.entities[id].render(tick);
-            }
-
-            this.sendPlayerData = function () {
-                socket.emit("sendData", {
-                    move: {
-                        player_direction_x: player.direction_x,
-                        player_velocity_x:  player.velocity_x,
-                        player_velocity_y:  player.velocity_y,
-                        player_posX:        player.posX, 
-                        player_posY:        player.posY,
-                        user_name:          this.userName,
-                        currentAnimOnce:    player.currentAnimationOnce,
-                        attacking:          true
-                    }
-                });
             }
 
             this.tick++;

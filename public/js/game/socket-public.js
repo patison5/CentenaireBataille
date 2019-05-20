@@ -61,10 +61,13 @@ function startFrontSocket (battle) {
         // console.log("Socket on connectedBattle emmited!")
         console.log(data);
 
+
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+
         if (data.ok) {
             if (!battle.userName)
                 battle.userName = data.userName;
-            
+
             if (!battle.idNumber)
                 battle.idNumber = data.numberCLient;
         }
