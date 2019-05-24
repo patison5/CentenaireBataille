@@ -6,7 +6,7 @@ class Battle {
         this.world = new Battle.World();
         this.sound = new Sound();
 
-        this.world.WIDTH  = document.getElementById('game__container').width;
+        this.world.WIDTH = document.getElementById('game__container').width;
         this.world.HEIGHT = document.getElementById('game__container').height;
 
         this.userName = null;
@@ -18,18 +18,18 @@ class Battle {
         this.currentTime = 90;
     }
 
-    startGameTimer () {
+    startGameTimer() {
         setTimeout(() => {
             this.currentTime--;
 
             if (this.currentTime == 0)
                 alert("game finished!");
-            else 
+            else
                 this.startGameTimer();
         }, 1000)
     }
 
-    drawPlayersInfo () {
+    drawPlayersInfo() {
         this.context.font = "25px Arial";
         this.context.color = "#fff";
         this.context.strokeStyle = "rgb(154, 59, 59)";
@@ -39,23 +39,23 @@ class Battle {
         this.context.fillText("Player", 20, 30);
         this.context.beginPath();
         this.context.moveTo(20, 60);
-        this.context.lineTo(this.player.health*3, 60);
+        this.context.lineTo(this.player.health * 3, 60);
         this.context.stroke();
 
 
         this.context.fillText("Enemy", this.world.WIDTH - 100, 30);
         this.context.beginPath();
-        this.context.moveTo(this.world.WIDTH - this.enemy.health*3, 60);
+        this.context.moveTo(this.world.WIDTH - this.enemy.health * 3, 60);
         this.context.lineTo(this.world.WIDTH - 20, 60);
-        this.context.stroke();  
+        this.context.stroke();
     }
 
-    collideObjects () {
-        let playerWidth = 40*3;
+    collideObjects() {
+        let playerWidth = 40 * 3;
 
-        console.log(this.player.posX)
+        console.log(this.player.posX);
         if (Math.abs(this.player.posX - this.enemy.posX) <= playerWidth) {
-            console.log("ENEMY PUCHNED ONCE!!!!!!!!!!!!!!!!!!!!!!!!!")
+            console.log("ENEMY PUCHNED ONCE!!!!!!!!!!!!!!!!!!!!!!!!!");
             return true
         } else {
             console.log("U ARE MIIIIISSSEEEED!D")
@@ -64,7 +64,7 @@ class Battle {
         console.log(Math.abs(this.player.posX - this.enemy.posX))
     }
 
-    drawGameTimer () {
+    drawGameTimer() {
         this.context.font = "40px Arial";
         this.context.color = "#fff";
         this.context.fillStyle = "#ffffff";
@@ -72,31 +72,30 @@ class Battle {
     }
 
 
-    startBattle () {
+    startBattle() {
         // начинаем отрисовку игры
-        console.log('starting that fucking game')
+        console.log('starting that fucking game');
 
         if (this.idNumber % 2 == 0) {
             this.player = new Player("player", this.context, 10, 800);
-            this.enemy  = new Enemy ("Enemy",  this.context, 300, 800);
-            
-            this.sound.playSoundInLoop('default')
+            this.enemy = new Emeny("Enemy", this.context, 300, 800);
+
+            this.sound.playSoundInLoop('default');
 
             console.log('you are the number ', this.idNumber)
         } else {
-            console.log('you are the number ', this.idNumber)
+            console.log('you are the number ', this.idNumber);
 
             this.player = new Player("player", this.context, 300, 800);
-            this.enemy  = new Enemy ("Enemy",  this.context, 10, 800);
-
+            this.enemy = new Emeny("enemy", this.context, 10, 800);
 
 
             this.enemy.setAnimationTo("default");
             this.player.setAnimationTo("default");
         }
 
-        this.entities.push(this.player)
-        this.entities.push(this.enemy)
+        this.entities.push(this.player);
+        this.entities.push(this.enemy);
 
         this.enemy.player = 60;
 
@@ -105,9 +104,9 @@ class Battle {
         this.startGameTimer() //стартуем таймер игры
         // this.sound.playSoundInLoop('default')
         // this.sound.stopPlayingSound();
-    } 
+    }
 
-    update (data) {
+    update(data) {
 
         if (data.login == this.userName) {
             // console.log("updating player")
@@ -118,24 +117,23 @@ class Battle {
         }
     }
 
-    render (tick) {
+    render(tick) {
         setTimeout(() => {
 
             // CLEARGIN CANVVAS
-            this.context.clearRect(0, 0, this.world.WIDTH, this.world.HEIGHT)
+            this.context.clearRect(0, 0, this.world.WIDTH, this.world.HEIGHT);
 
             // DRAWING MAIN LINE
             this.context.strokeStyle = "#202830";
             this.context.lineWidth = 4;
             this.context.beginPath();
-            this.context.moveTo(0, this.world.HEIGHT-40);
-            this.context.lineTo(this.world.WIDTH, this.world.HEIGHT-40);
+            this.context.moveTo(0, this.world.HEIGHT - 40);
+            this.context.lineTo(this.world.WIDTH, this.world.HEIGHT - 40);
             this.context.stroke();
 
             this.drawPlayersInfo();
             this.drawGameTimer();
 
-            
 
             //tmp setup
             let player = this.entities[0];
@@ -146,33 +144,33 @@ class Battle {
                 this.player.changeAtackingBoolTimer();
 
                 if (this.collideObjects()) {
-                    console.log("ENEMY IS BEEN ATTACKED!##################")
+                    console.log("ENEMY IS BEEN ATTACKED!##################");
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          true,
+                            player_velocity_x: player.velocity_x,
+                            player_velocity_y: player.velocity_y,
+                            player_posX: player.posX,
+                            player_posY: player.posY,
+                            user_name: this.userName,
+                            currentAnimOnce: player.currentAnimationOnce,
+                            attacking: true,
                             enemyIsBeingAttacked: true
                         }
                     });
 
-                    this.enemy.health-=10;
+                    this.enemy.health -= 10;
                 } else {
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          true
+                            player_velocity_x: player.velocity_x,
+                            player_velocity_y: player.velocity_y,
+                            player_posX: player.posX,
+                            player_posY: player.posY,
+                            user_name: this.userName,
+                            currentAnimOnce: player.currentAnimationOnce,
+                            attacking: true
                         }
                     });
                 }
@@ -185,13 +183,13 @@ class Battle {
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
+                            player_velocity_x: player.velocity_x,
+                            player_velocity_y: player.velocity_y,
+                            player_posX: player.posX,
+                            player_posY: player.posY,
+                            user_name: this.userName,
+                            currentAnimOnce: player.currentAnimationOnce,
+                            attacking: controller.attack
                         }
                     });
                 }
@@ -200,18 +198,18 @@ class Battle {
                     player.direction_x = -1;
                     player.velocity_x -= 0.5;
 
-                    console.log(controller.attack)
+                    console.log(controller.attack);
 
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
+                            player_velocity_x: player.velocity_x,
+                            player_velocity_y: player.velocity_y,
+                            player_posX: player.posX,
+                            player_posY: player.posY,
+                            user_name: this.userName,
+                            currentAnimOnce: player.currentAnimationOnce,
+                            attacking: controller.attack
                         }
                     });
                 }
@@ -220,18 +218,18 @@ class Battle {
                     player.direction_x = 1;
                     player.velocity_x += 0.5;
 
-                    console.log("player.posX: ", player.posX)
+                    console.log("player.posX: ", player.posX);
 
                     socket.emit("sendData", {
                         move: {
                             player_direction_x: player.direction_x,
-                            player_velocity_x:  player.velocity_x,
-                            player_velocity_y:  player.velocity_y,
-                            player_posX:        player.posX, 
-                            player_posY:        player.posY,
-                            user_name:          this.userName,
-                            currentAnimOnce:    player.currentAnimationOnce,
-                            attacking:          controller.attack
+                            player_velocity_x: player.velocity_x,
+                            player_velocity_y: player.velocity_y,
+                            player_posX: player.posX,
+                            player_posY: player.posY,
+                            user_name: this.userName,
+                            currentAnimOnce: player.currentAnimationOnce,
+                            attacking: controller.attack
                         }
                     });
                 }
@@ -242,15 +240,13 @@ class Battle {
 
             }
 
-            
-
 
             // if (this.player.attacking)
             //     console.log(this.player.attacking)
 
             // if (this.enemy.attacking)
             //     console.log(this.enemy.attacking)
-            
+
 
             // обработка обоих игроков - добавление физики и анимаций
             for (let id in this.entities) {
@@ -289,13 +285,13 @@ class Battle {
                 if (!charachter.attacking) {
                     if (charachter.direction_x < 0) {
                         if (charachter.velocity_x < -0.4) {
-                            if (charachter.currentAnimationTitle != "running_reverse"){
+                            if (charachter.currentAnimationTitle != "running_reverse") {
                                 // console.log('moving left')
                                 charachter.currentAnimationTitle = "running_reverse";
                                 charachter.setAnimationTo('running_reverse');
                             }
                         } else {
-                            if (charachter.currentAnimationTitle != "default_reverse"){
+                            if (charachter.currentAnimationTitle != "default_reverse") {
                                 // console.log('staying animation...')
                                 charachter.currentAnimationTitle = "default_reverse";
                                 charachter.setAnimationTo('default_reverse');
@@ -303,13 +299,13 @@ class Battle {
                         }
                     } else if (charachter.direction_x > 0) {
                         if (charachter.velocity_x > 0.4) {
-                            if (charachter.currentAnimationTitle != "running"){
+                            if (charachter.currentAnimationTitle != "running") {
                                 // console.log('moving left')
                                 charachter.currentAnimationTitle = "running";
                                 charachter.setAnimationTo('running');
                             }
                         } else {
-                            if (charachter.currentAnimationTitle != "default"){
+                            if (charachter.currentAnimationTitle != "default") {
                                 // console.log('staying animation...')
                                 charachter.currentAnimationTitle = "default";
                                 charachter.setAnimationTo('default');
@@ -319,18 +315,15 @@ class Battle {
                 }
 
 
-
                 //setting animation onle once...
                 if (charachter.attacking && !charachter.currentAnimationOnce) {
                     charachter.currentAnimationTitle = "attacking";
-                    charachter.currentAnimationOnce  = true;
+                    charachter.currentAnimationOnce = true;
                     charachter.setAnimationTo('attacking', true);
 
                     this.sound.playSound('punch')
                 }
             }
-
-                       
 
 
             for (let id in this.entities) {
@@ -345,10 +338,9 @@ class Battle {
 }
 
 
-
-Battle.World = function(friction = 0.8, gravity = 2) {
+Battle.World = function (friction = 0.8, gravity = 2) {
     this.HEIGHT = 620;
-    this.WIDTH  = 980;
+    this.WIDTH = 980;
     this.friction = friction;
-    this.gravity  = gravity;
-}
+    this.gravity = gravity;
+};

@@ -8,7 +8,7 @@ window.onload = function () {
     // TEMPRORARY OPERATIONS
     canvas.style.display = 'block';
     canvas.style.border = '10px solid #fff';
-    canvas.style.backgroundColor = "rgb(255, 255, 255, 0.25)"
+    canvas.style.backgroundColor = "rgb(255, 255, 255, 0.25)";
     // canvas.style.backgroundImage = "url('../images/bg1.gif')";
     canvas.style.backgroundSize = "cover";
     canvas.style.backgroundPosition = 'center';
@@ -17,36 +17,36 @@ window.onload = function () {
     controller = {
         //KEYS BINDING CODES
         KEYCODE_SPACE: 32,
-        KEYCODE_W:     87,
-        KEYCODE_A:     65,
-        KEYCODE_D:     68,
-        KEYCODE_S:     83,
+        KEYCODE_W: 87,
+        KEYCODE_A: 65,
+        KEYCODE_D: 68,
+        KEYCODE_S: 83,
         KEYCODE_ENTER: 13,
         KEYCODE_ARROW_DOWN: 40,
 
-        left:   false,
-        right:  false,
-        up:     false,
+        left: false,
+        right: false,
+        up: false,
         attack: false,
         reaction: false,
 
-        keyListener:function(event) {
+        keyListener: function (event) {
 
             var key_state = (event.type == "keydown") ? true : false;
 
-            switch(event.keyCode) {
+            switch (event.keyCode) {
 
                 case controller.KEYCODE_A:
                     controller.left = key_state;
-                break;
+                    break;
 
                 case controller.KEYCODE_SPACE:
                     controller.up = key_state;
-                break;
+                    break;
 
                 case controller.KEYCODE_ENTER:
                     controller.attack = key_state;
-                break;
+                    break;
 
                 case controller.KEYCODE_D:
                     controller.right = key_state;
@@ -54,13 +54,12 @@ window.onload = function () {
                 case controller.KEYCODE_ARROW_DOWN:
                     controller.reaction = key_state;
 
-                break;
+                    break;
             }
 
         }
 
     };
-
 
 
     function keyListener() {
@@ -86,38 +85,37 @@ window.onload = function () {
                     break;
 
                 case KEYCODE_A:
-                    console.log('moving left...')
-                    battle.entities[0].posX-=5;
+                    console.log('moving left...');
+                    battle.entities[0].posX -= 5;
 
                     battle.entities[0].setAnimationTo('running');
 
                     socket.emit("sendData", {
-                        move: [0,-1]
+                        move: [0, -1]
                     });
 
                     break;
 
                 case KEYCODE_D:
-                    console.log('moving right...')
-                    battle.entities[0].posX+=5;
+                    console.log('moving right...');
+                    battle.entities[0].posX += 5;
 
-                    
 
                     if (battle.entities[0].currentAnimationTitle != "running") {
-                        console.log("CHANGING ANIMBATION TO RUNNING")
-                        console.log(battle.entities[0])
+                        console.log("CHANGING ANIMBATION TO RUNNING");
+                        console.log(battle.entities[0]);
                         battle.entities[0].setAnimationTo('running');
                         console.log(battle.entities[0])
                     }
 
                     socket.emit("sendData", {
-                        move: [0,1]
+                        move: [0, 1]
                     });
 
                     break;
 
                 case KEYCODE_S:
-                    console.log("trying to end the battle....")
+                    console.log("trying to end the battle....");
 
                     socket.emit("endBattle", 'moving back');
                     break;
@@ -146,28 +144,25 @@ window.onload = function () {
         };
 
 
-
         // KEY BINIDINGS
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
-    }    
-
-    
+    }
 
 
-    function sprite (options) {
-        
+    function sprite(options) {
+
         var that = {},
             frameIndex = 0,
             tickCount = 0,
             ticksPerFrame = options.ticksPerFrame || 0,
             numberOfFrames = options.numberOfFrames || 1;
-        
+
         that.context = options.context;
         that.width = options.width;
         that.height = options.height;
         that.image = options.image;
-        
+
         that.update = function () {
 
             tickCount += 1;
@@ -175,9 +170,9 @@ window.onload = function () {
             if (tickCount > ticksPerFrame) {
 
                 tickCount = 0;
-                
+
                 // If the current frame index is in range
-                if (frameIndex < numberOfFrames - 1) {  
+                if (frameIndex < numberOfFrames - 1) {
                     // Go to the next frame
                     frameIndex += 1;
                 } else {
@@ -185,28 +180,27 @@ window.onload = function () {
                 }
             }
         };
-        
+
         that.render = function () {
-        
-          // Clear the canvas
-          that.context.clearRect(0, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
-          
-          // Draw the animation
-          that.context.drawImage(
-            that.image,
-            frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
-            0,                                              // отступ перед вырезом по У
-            that.width / numberOfFrames,                    // ширина выреза
-            that.height,                                    // высота выреза
-            0,                                              // отступ итоговой картинки слева
-            600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
-            that.width / numberOfFrames * 3,                // ширина итоговой картиинки
-            that.height * 3);                               // высота итоговой картинки
+
+            // Clear the canvas
+            that.context.clearRect(0, 600 - that.height * 3 + 60, that.width * 3, that.height * 3);
+
+            // Draw the animation
+            that.context.drawImage(
+                that.image,
+                frameIndex * that.width / numberOfFrames,       // отступ перед вырезом по Х
+                0,                                              // отступ перед вырезом по У
+                that.width / numberOfFrames,                    // ширина выреза
+                that.height,                                    // высота выреза
+                0,                                              // отступ итоговой картинки слева
+                600 - that.height * 3 + 60,                     // отступ итоговой картинки сверху
+                that.width / numberOfFrames * 3,                // ширина итоговой картиинки
+                that.height * 3);                               // высота итоговой картинки
         };
-        
+
         return that;
     }
-
 
 
     // запускаем батл
@@ -215,20 +209,17 @@ window.onload = function () {
     startFrontSocket(battle);
 
 
-
     // как только будет реализован функционал подгрузки обоих клиентов - убрать эту хуйню нахуй!
     setTimeout(() => {
-         console.log("battle id number of client : ", battle.idNumber)
+        console.log("battle id number of client : ", battle.idNumber);
 
         battle.startBattle();
-    }, 1000)
-
-   
+    }, 1000);
 
 
     // jобработка клавишных событий
     //keyListener()
-    window.addEventListener("keydown", controller.keyListener)
+    window.addEventListener("keydown", controller.keyListener);
     window.addEventListener("keyup", controller.keyListener);
 
 };

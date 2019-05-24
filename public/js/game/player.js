@@ -41,7 +41,7 @@ class Player extends Character {
             'numberOfFrames': 7,
             'ticksPerFrame': 4
         },
-       'attacking': {
+        'attacking': {
             'src': "/images/p2/hit.png",
             'width': 484,
             'height': 106,
@@ -104,31 +104,31 @@ class Player extends Character {
         //     'numberOfFrames': 8,
         //     'ticksPerFrame': 4
         // }
-    }
-    
-    startAnimation () {
+    };
+
+    startAnimation() {
         if (this.currentAnimationSprite) {
-            this.currentAnimationSprite.update()
+            this.currentAnimationSprite.update();
             this.currentAnimationSprite.render(this)
         }
     }
 
-    update (data) {
+    update(data) {
         // console.log("Player is updating:", data)
 
-        this.posX                 = data.player_posX;
-        this.posY                 = data.player_posY;
-        this.direction_x          = data.player_direction_x;
-        this.velocity_x           = data.player_velocity_x;
-        this.velocity_y           = data.player_velocity_y;
-        this.attacking            = data.attacking;
+        this.posX = data.player_posX;
+        this.posY = data.player_posY;
+        this.direction_x = data.player_direction_x;
+        this.velocity_x = data.player_velocity_x;
+        this.velocity_y = data.player_velocity_y;
+        this.attacking = data.attacking;
         this.currentAnimationOnce = data.currentAnimOnce;
 
         if (data.attacking === true)
             this.changeAtackingBoolTimer();
     }
 
-    render (tick) {
+    render(tick) {
         this.startAnimation();
     }
 }

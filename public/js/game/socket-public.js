@@ -1,6 +1,6 @@
-function startFrontSocket (battle) {
+function startFrontSocket(battle) {
 
-    console.log("battle is: ", battle)
+    console.log("battle is: ", battle);
 
     function getParamUrl(param) {
         let params = window
@@ -53,17 +53,13 @@ function startFrontSocket (battle) {
         if (!data.message)
             battle.update(data);
 
-        else 
+        else
             console.log(data.message)
-    })
+    });
 
     socket.on('connectedBattle', function (data) {
         // console.log("Socket on connectedBattle emmited!")
         console.log(data);
-
-
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-
         if (data.ok) {
             if (!battle.userName)
                 battle.userName = data.userName;

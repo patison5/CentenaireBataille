@@ -158,12 +158,10 @@ input {
     background: #1f5005d1;
 }
 
-
-
-
 .game__container {
     position: relative;
 }
+
 .game__data-container {
     position: absolute;
     color: #000;

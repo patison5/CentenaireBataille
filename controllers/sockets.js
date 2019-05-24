@@ -92,6 +92,7 @@ function disconnectBattle(data, io, socket) {
         BattleManager.getBattle(data.battleId).disconnect();
     }
 }
+
 // я хочу чтоб ты тут кое-что изменил, чтобы работало!
 
 

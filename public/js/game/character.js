@@ -1,5 +1,5 @@
 class Character {
-	constructor(type, context, posX = 10, posY = 0) {
+    constructor(type, context, posX = 10, posY = 0) {
         this.health = 100;
         this.posX = posX;
         this.posY = posY;
@@ -18,9 +18,9 @@ class Character {
         this.sizeScaleY = 3;
     }
 
-    changeAtackingBoolTimer () {
+    changeAtackingBoolTimer() {
         setTimeout(() => {
-            console.log('changin attacking value back to false;')
+            console.log('changin attacking value back to false;');
             this.attacking = false;
             this.currentAnimationOnce = false;
         }, 1000)
@@ -34,39 +34,39 @@ class Character {
     setAnimationTo(animationName, once = false) {
         this.tmpSpriteImg.src = this.animations[animationName].src;
 
-        console.log('setting animations to', animationName, once)
+        console.log('setting animations to', animationName, once);
 
         this.currentAnimationSprite = this.sprite({
-            context:        this.context,
-            width:          this.animations[animationName].width,
-            height:         this.animations[animationName].height,
-            imageSrc:       this.animations[animationName].src,
+            context: this.context,
+            width: this.animations[animationName].width,
+            height: this.animations[animationName].height,
+            imageSrc: this.animations[animationName].src,
             numberOfFrames: this.animations[animationName].numberOfFrames,
-            ticksPerFrame:  this.animations[animationName].ticksPerFrame,
-            image:          this.tmpSpriteImg,
-            once:           once
+            ticksPerFrame: this.animations[animationName].ticksPerFrame,
+            image: this.tmpSpriteImg,
+            once: once
         });
     }
 
-    sprite (options) {
-        
+    sprite(options) {
+
         var that = {},
             frameIndex = 0,
             tickCount = 0,
-            ticksPerFrame  = options.ticksPerFrame  || 0,
+            ticksPerFrame = options.ticksPerFrame || 0,
             numberOfFrames = options.numberOfFrames || 1;
-        
-        that.context    = options.context;
-        that.width      = options.width;
-        that.height     = options.height;
-        that.image      = options.image;  
-        that.imageSrc   = options.imageSrc; 
-        that.once       = options.once;
 
-        that.stopAnimation = false;  
+        that.context = options.context;
+        that.width = options.width;
+        that.height = options.height;
+        that.image = options.image;
+        that.imageSrc = options.imageSrc;
+        that.once = options.once;
 
-        console.log('playing for once? :',  that.once)
-        console.log("stopAnimation",        that.stopAnimation)
+        that.stopAnimation = false;
+
+        console.log('playing for once? :', that.once);
+        console.log("stopAnimation", that.stopAnimation);
 
         that.update = function () {
 
@@ -75,13 +75,13 @@ class Character {
 
                 if (tickCount > ticksPerFrame) {
                     tickCount = 0;
-                    
+
                     // If the current frame index is in range
-                    if (frameIndex < numberOfFrames - 2) {  
+                    if (frameIndex < numberOfFrames - 2) {
                         // Go to the next frame
                         frameIndex += 1;
                     } else {
-                        if(that.once){
+                        if (that.once) {
                             that.stopAnimation = true;
                             console.log('stoping animation for once effect')
                         }
@@ -91,7 +91,7 @@ class Character {
                 }
             }
         };
-        
+
         that.render = function (entity) {
             //that.context.clearRect(entity.posX, entity.posY, that.width * 3, that.height * 3);
 
@@ -107,7 +107,7 @@ class Character {
                 that.width / numberOfFrames * 2.4,                    // ширина итоговой картиинки
                 that.height * 2.4);                                   // высота итоговой картинки
         };
-        
+
         return that;
     }
 }
