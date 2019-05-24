@@ -1,4 +1,4 @@
-class Emeny extends Character {
+class Enemy extends Character {
 
     name = "Enemy";
 

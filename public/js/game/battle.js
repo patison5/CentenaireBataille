@@ -78,7 +78,7 @@ class Battle {
 
         if (this.idNumber % 2 == 0) {
             this.player = new Player("player", this.context, 10, 800);
-            this.enemy = new Emeny("Enemy", this.context, 300, 800);
+            this.enemy = new Enemy("enemy", this.context, 300, 800);
 
             this.sound.playSoundInLoop('default');
 
@@ -87,7 +87,7 @@ class Battle {
             console.log('you are the number ', this.idNumber);
 
             this.player = new Player("player", this.context, 300, 800);
-            this.enemy = new Emeny("enemy", this.context, 10, 800);
+            this.enemy = new Enemy("enemy", this.context, 10, 800);
 
 
             this.enemy.setAnimationTo("default");
