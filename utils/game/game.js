@@ -6,14 +6,37 @@ class Game {
         this.idGame = idGame;
         this.io = Socket.getState().socket;
         this.sockets = new Map();
+        this.time = 0;
+        this.ticks = 0;
+        this.run();
+        this.clock();
+        this.numberCLient = 0;  //отправляет номер подключенного клиента - нужно для инициализации позиций игроков
+    }
+
+    clock() {
+        setTimeout(() => {
+            this.time++;
+            this.clock();
+        }, 1000);
+    }
+
+    run() {
+        setTimeout(() => {
+            this.ticks++;
+            this.run();
+        }, 1000 / 60);
     }
 
     setSocket(socket, login) {
         this.sockets.set(login, socket);
         socket.join(this.idGame);
+        socket.login = login;
+
         this.io.to(this.idGame).emit("connectedBattle", {
             ok: true,
-            message: login + " connected !"
+            message: login + " connected !",
+            userName: login,
+            numberCLient: this.numberCLient
         });
         socket.on("sendData", (data) => {
             data.login = socket.login;

@@ -41,9 +41,17 @@ exports.call = function (io, socket) {
     socket.on("listBattles", function () {
         getBattles(io, socket);
     });
-    socket.on('disconnect', function () {
+
+
+    // я хочу чтоб ты тут кое-что изменил, чтобы работало!
+    socket.on('disconnect', function (data) {
         console.log('Got disconnect: ' + socket.id);
+        disconnectBattle(data, io, socket);
+
     });
+    // я хочу чтоб ты тут кое-что изменил, чтобы работало!
+
+
 };
 
 function getID(socket) {
@@ -75,6 +83,17 @@ function connectBattle(data, io, socket) {
         BattleManager.getBattle(data.battleId).setSocket(socket, cookie.get("login"));
     }
 }
+
+// я хочу чтоб ты тут кое-что изменил, чтобы работало!
+function disconnectBattle(data, io, socket) {
+    let cookie = Utils.getCookie(socket);
+
+    if (BattleManager.getBattle(data.battleId) !== undefined) {
+        BattleManager.getBattle(data.battleId).disconnect();
+    }
+}
+// я хочу чтоб ты тут кое-что изменил, чтобы работало!
+
 
 function endBattle(data, io, socket) {
     let room = 0;
